@@ -64,7 +64,7 @@ copy-ios-bindings:
 
 .PHONY: demo-app-ios
 demo-app-ios:generate-ios-bindings copy-ios-bindings
-	@cd demo/app && flutter doctor  && flutter clean && npm install -g ios-sim && ios-sim start --devicetypeid "iPhone-14" && flutter devices && flutter run
+	@cd demo/app && flutter doctor  && flutter clean && npm install -g ios-sim && ios-sim start --devicetypeid "iPhone-16" && flutter devices && flutter run
 
 .PHONY: demo-app-android
 demo-app-android: generate-android-bindings copy-android-bindings
