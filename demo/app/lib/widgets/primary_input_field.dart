@@ -30,14 +30,12 @@ class PrimaryInputField extends StatelessWidget {
       ],
       decoration: InputDecoration(
         floatingLabelStyle: const TextStyle(color: Color(0xff190C21), fontWeight: FontWeight.w700, fontSize: 16),
-        fillColor: const Color(0xffEEEAEE),
-        filled: true,
         enabledBorder: const UnderlineInputBorder(
           //<-- SEE HERE
           borderSide: BorderSide(width: 2, color: Color(0xff8D8A8E)),
         ),
         focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(width: 2, color: Color(0xff8D8A8E)),
+          borderSide: BorderSide(width: 2, color: Color(0xff8a204b)),
         ),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.only(

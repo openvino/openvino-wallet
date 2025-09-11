@@ -10,22 +10,16 @@ class CustomLogoAppBar extends AppBar {
             'lib/assets/images/logo.png',
             fit: BoxFit.contain,
             height: 24,
-            width: 144.6,
+            width: 144,
           ),
-          backgroundColor: const Color(0xffEEEAEE),
+          toolbarHeight: 50,
           flexibleSpace: Container(
-            height: 130,
+            height: 200,
             decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: ExactAssetImage('lib/assets/images/glow.png'),
-                  opacity: 0.6,
-                  alignment: Alignment.topCenter,
-                  fit: BoxFit.fill,
-                ),
-                gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: <Color>[
-                  Color(0xff100716),
-                  Color(0xff261131),
-                ])),
+                gradient: LinearGradient(
+              colors: [Color(0xff691631), Color(0xff8a204b)],
+              stops: [0, 1],
+            )),
           ),
         );
 }

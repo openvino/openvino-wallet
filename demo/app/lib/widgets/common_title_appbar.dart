@@ -43,10 +43,13 @@ class CustomTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 alignment: Alignment.topCenter,
                 fit: BoxFit.fill,
               ),
-              gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: <Color>[
-                Color(0xff100716),
-                Color(0xff261131),
-              ])),
+              gradient:LinearGradient(
+          colors: [Color(0xff691631), Color(0xff8a204b)],
+          stops: [0, 1],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        )
+      ),
         ),
       ),
     );

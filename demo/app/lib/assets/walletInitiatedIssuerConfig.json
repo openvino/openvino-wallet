@@ -1,5 +1,5 @@
 {
-  "TrustBloc (Stg) Issuer" : {
+  "Openvino" : {
    "issuerURI": "https://api-gateway.stg.trustbloc.dev/issuer/bank_issuer/v1.0",
    "scopes": ["openid","profile"],
    "clientID": "oidc4vc_client",

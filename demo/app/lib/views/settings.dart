@@ -67,17 +67,19 @@ class SettingsState extends State<Settings> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           automaticallyImplyLeading: false,
-          title: const Text('Settings'),
+          title: const Text(
+            'Settings',
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: const Color(0xffEEEAEE),
           flexibleSpace: Container(
             decoration: const BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, stops: [
-              0.0,
-              1.0
-            ], colors: <Color>[
-              Color(0xff261131),
-              Color(0xff100716),
-            ])),
+                gradient: LinearGradient(
+              colors: [Color(0xff691631), Color(0xff8a204b)],
+              stops: [0, 1],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            )),
           ),
         ),
         body: Container(
@@ -131,7 +133,8 @@ class SettingsState extends State<Settings> {
                 iconSize: 24,
                 elevation: 16,
                 isExpanded: true,
-                items: supportedDids.map<DropdownMenuItem<String>>((String value) {
+                items:
+                    supportedDids.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -154,7 +157,8 @@ class SettingsState extends State<Settings> {
                 iconSize: 24,
                 elevation: 16,
                 isExpanded: true,
-                items: supportedKeyTypes.map<DropdownMenuItem<String>>((String value) {
+                items: supportedKeyTypes
+                    .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -182,7 +186,9 @@ class SettingsState extends State<Settings> {
                       onPressed: () {
                         signOut();
                       },
-                      child: const Text('Sign Out', style: TextStyle(fontSize: 16, color: Color(0xff6C6D7C))),
+                      child: const Text('Sign Out',
+                          style: TextStyle(
+                              fontSize: 16, color: Color(0xff6C6D7C))),
                       // trying to move to the bottom
                     ),
                   ),
@@ -194,16 +200,22 @@ class SettingsState extends State<Settings> {
                     Align(
                       alignment: Alignment.bottomLeft,
                       child: Text('Version: $walletSDKVersion',
-                          textAlign: TextAlign.left, style: const TextStyle(fontSize: 12, color: Color(0xff6C6D7C))),
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                              fontSize: 12, color: Color(0xff6C6D7C))),
                     ),
                     Align(
                         alignment: Alignment.bottomLeft,
                         child: Text('GitRevision: $gitRevision',
-                            textAlign: TextAlign.left, style: const TextStyle(fontSize: 12, color: Color(0xff6C6D7C)))),
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                                fontSize: 12, color: Color(0xff6C6D7C)))),
                     Align(
                       alignment: Alignment.bottomLeft,
                       child: Text('Build Time: $buildTimeRev',
-                          textAlign: TextAlign.left, style: const TextStyle(fontSize: 12, color: Color(0xff6C6D7C))),
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                              fontSize: 12, color: Color(0xff6C6D7C))),
                     )
                   ],
                 ),
@@ -261,11 +273,13 @@ class SettingsState extends State<Settings> {
   checkKeyTypeSelected() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      selectedKeyType = preferences.getString('keyType') ?? supportedKeyTypes.first;
+      selectedKeyType =
+          preferences.getString('keyType') ?? supportedKeyTypes.first;
     });
   }
 
   signOut() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const MyApp()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const MyApp()));
   }
 }
