@@ -1,0 +1,254 @@
+#!/usr/bin/env bash
+# bootstrap_ios_sim.sh — Todo-en-uno: repo fresco → app corriendo en simulador iOS
+
+set -euo pipefail
+
+# ========= Config =========
+APP_PATH="${APP_PATH:-}"                  # autodetecta si queda vacío
+IOS_PLATFORM="${IOS_PLATFORM:-13.0}"      # iOS mínimo en Podfile
+DEVICE_NAME="${DEVICE_NAME:-iPhone 16e}"  # p.ej. "iPhone 17 Pro"
+FLUTTER_BIN_DEFAULT="$HOME/Documents/code/flutter/flutter/bin"
+FLUTTER_BIN="${FLUTTER_BIN:-$FLUTTER_BIN_DEFAULT}"
+
+say(){ printf "\n\033[1;34m==> %s\033[0m\n" "$*"; }
+warn(){ printf "\n\033[1;33m[!] %s\033[0m\n" "$*"; }
+die(){ printf "\n\033[1;31m[✗] %s\033[0m\n" "$*"; exit 1; }
+need(){ command -v "$1" >/dev/null 2>&1 || die "Falta comando: $1"; }
+
+prepend_include_if_missing(){ # $1 archivo, $2 include line
+  local f="$1" inc="$2"
+  [[ -f "$f" ]] || die "Falta $f"
+  grep -qF "$inc" "$f" || { { echo "$inc"; cat "$f"; } > "$f.tmp" && mv "$f.tmp" "$f"; }
+}
+
+ensure_appicon(){
+  local appicon="ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json"
+  if [[ ! -f "$appicon" ]]; then
+    say "Restaurando AppIcon desde plantilla Flutter"
+    local tmp="/tmp/flutter_iconseed_$$"
+    mkdir -p "$tmp"
+    (flutter create "$tmp" >/dev/null 2>&1 || true)
+    if [[ -d "$tmp/ios/Runner/Assets.xcassets/AppIcon.appiconset" ]]; then
+      mkdir -p ios/Runner/Assets.xcassets
+      rm -rf ios/Runner/Assets.xcassets/AppIcon.appiconset
+      cp -R "$tmp/ios/Runner/Assets.xcassets/AppIcon.appiconset" ios/Runner/Assets.xcassets/
+    else
+      warn "No se pudo generar AppIcon; continúo."
+    fi
+    rm -rf "$tmp"
+  fi
+}
+
+ensure_valid_logo(){ # crea/reemplaza logo.png con un PNG válido si falta o está corrupto
+  local p="lib/assets/images/logo.png"
+  mkdir -p "lib/assets/images"
+  if [[ ! -f "$p" ]] || ! file "$p" 2>/dev/null | grep -q "PNG image data"; then
+    say "Creando logo.png (placeholder válido)"
+/usr/bin/python3 - <<'PY'
+import base64, pathlib
+png_b64 = b'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII='
+pathlib.Path("lib/assets/images").mkdir(parents=True, exist_ok=True)
+pathlib.Path("lib/assets/images/logo.png").write_bytes(base64.b64decode(png_b64))
+PY
+  fi
+}
+
+ensure_ios_runtime(){ # devuelve p.ej. com.apple.CoreSimulator.SimRuntime.iOS-26-0
+  say "Verificando runtimes iOS instalados…"
+  local rt
+  rt="$(xcrun simctl list runtimes 2>/dev/null | awk '/iOS/ && /available/ {print $NF}' | tail -n1 || true)"
+  if [[ -z "$rt" ]]; then
+    warn "No hay runtimes iOS. Descargando con Xcode (puede tardar)…"
+    sudo xcodebuild -license accept >/dev/null 2>&1 || true
+    xcodebuild -downloadPlatform iOS
+    sudo xcodebuild -runFirstLaunch >/dev/null 2>&1 || true
+    rt="$(xcrun simctl list runtimes 2>/dev/null | awk '/iOS/ && /available/ {print $NF}' | tail -n1 || true)"
+  fi
+  [[ -n "$rt" ]] || die "No se pudo instalar el runtime iOS. Abrí Xcode → Settings → Platforms → iOS → Download y reintentá."
+  echo "$rt"
+}
+
+get_devtype(){ # identificador de device type para $DEVICE_NAME o primer iPhone
+  local dt
+  dt="$(xcrun simctl list devicetypes | awk -v n="$DEVICE_NAME" '$0 ~ ("^"n" \\(") {print $NF; exit}' | tr -d '()')"
+  if [[ -z "$dt" ]]; then
+    warn "No existe device type para '$DEVICE_NAME'. Uso el primer iPhone disponible."
+    dt="$(xcrun simctl list devicetypes | awk '/^iPhone .* \\(/ {print $NF}' | tr -d '()' | head -n1)"
+  fi
+  [[ -n "$dt" ]] || die "No se encontró ningún device type iPhone."
+  echo "$dt"
+}
+
+# ========= Pre-chequeos =========
+need xcrun; need pod
+if ! command -v flutter >/dev/null 2>&1; then
+  warn "Flutter no está en PATH — agrego $FLUTTER_BIN"
+  export PATH="$FLUTTER_BIN:$PATH"
+  command -v flutter >/dev/null 2>&1 || die "Flutter sigue sin estar en PATH; ajustá FLUTTER_BIN"
+fi
+
+# Autodetectar APP_PATH si no vino
+if [[ -z "${APP_PATH:-}" ]]; then
+  if [[ -f pubspec.yaml ]]; then APP_PATH="."
+  elif [[ -f demo/app/pubspec.yaml ]]; then APP_PATH="demo/app"
+  else die "No se encontró pubspec.yaml. Usá APP_PATH=/ruta/a/la/app"; fi
+fi
+[[ -d "$APP_PATH" ]] || die "No existe APP_PATH='$APP_PATH'"
+
+# ========= Xcode =========
+say "Seleccionando Xcode.app y cerrando Xcode"
+sudo xcode-select -s /Applications/Xcode.app/Contents/Developer >/dev/null 2>&1 || true
+osascript -e 'tell application "Xcode" to quit' >/dev/null 2>&1 || true
+sudo xcodebuild -license accept >/dev/null 2>&1 || true
+sudo xcodebuild -runFirstLaunch >/dev/null 2>&1 || true
+
+# ========= Flutter deps =========
+say "Entrando a $APP_PATH"; cd "$APP_PATH"
+[[ -f pubspec.yaml ]] || die "No hay pubspec.yaml en $PWD"
+say "flutter clean + pub get"
+flutter clean
+flutter pub get
+
+# ========= Podfile / xcconfig =========
+PODFILE="ios/Podfile"
+[[ -f "$PODFILE" ]] || die "No existe $PODFILE"
+say "Normalizando Podfile (platform :ios, '${IOS_PLATFORM}', sin duplicados)"
+cp "$PODFILE" "${PODFILE}.bak.$(date +%Y%m%d%H%M%S)"
+if ! grep -qE "^platform :ios" "$PODFILE"; then
+  { echo "platform :ios, '${IOS_PLATFORM}'"; cat "$PODFILE"; } > "${PODFILE}.tmp" && mv "${PODFILE}.tmp" "$PODFILE"
+else
+  /usr/bin/sed -E -i '' -e "s/^platform :ios, *'[0-9.]+'$/platform :ios, '${IOS_PLATFORM}'/" "$PODFILE"
+fi
+awk 'BEGIN{seen=0} /^platform :ios/{ if(seen==1) next; seen=1 } {print}' "$PODFILE" > "${PODFILE}.tmp" && mv "${PODFILE}.tmp" "$PODFILE"
+/usr/bin/sed -E -i '' -e 's/^([[:space:]]*)use_modular_headers!/# \1use_modular_headers!/' "$PODFILE" || true
+/usr/bin/sed -E -i '' -e 's/^([[:space:]]*)use_frameworks!([^:].*)?/# \1use_frameworks!\2/' "$PODFILE" || true
+
+# Post_install: garantizar que NO se excluya arm64 en simulador
+if ! grep -q "post_install do |installer|" "$PODFILE"; then
+cat >> "$PODFILE" <<'RUBY'
+
+post_install do |installer|
+  installer.generated_projects.each do |project|
+    project.targets.each do |t|
+      t.build_configurations.each do |c|
+        c.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = ""
+      end
+    end
+  end
+end
+RUBY
+fi
+
+say "Insertando includes de Pods en xcconfig (Runner: Debug/Release/Profile)"
+DBG="ios/Flutter/Debug.xcconfig"; REL="ios/Flutter/Release.xcconfig"; PRO="ios/Flutter/Profile.xcconfig"
+[[ -f "$DBG" && -f "$REL" ]] || die "Faltan ios/Flutter/Debug/Release.xcconfig"
+[[ -f "$PRO" ]] || cp "$REL" "$PRO"
+prepend_include_if_missing "$DBG" '#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"'
+prepend_include_if_missing "$REL" '#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"'
+prepend_include_if_missing "$PRO" '#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"'
+
+# ========= Assets mínimos =========
+ensure_appicon
+ensure_valid_logo
+
+# ========= Pods + DerivedData =========
+say "Instalando Pods"
+pushd ios >/dev/null
+pod deintegrate >/dev/null 2>&1 || true
+pod install
+popd >/dev/null
+
+say "Limpiando DerivedData"
+rm -rf ~/Library/Developer/Xcode/DerivedData/*
+
+# ========= Runtime / Simulador =========
+RUNTIME="$(ensure_ios_runtime)"; say "Runtime iOS: $RUNTIME"
+DEVTYPE="$(get_devtype)"
+NEWNAME="${DEVICE_NAME} (auto-$(date +%Y%m%d-%H%M%S))"
+say "Creando simulador: name='${NEWNAME}' type='${DEVTYPE}' runtime='${RUNTIME}'"
+UUID="$(xcrun simctl create "$NEWNAME" "$DEVTYPE" "$RUNTIME" 2>&1 | tail -n1)"
+if ! [[ "$UUID" =~ ^[0-9A-Fa-f-]{36}$ ]]; then
+  die "Falló la creación del simulador: $UUID"
+fi
+
+say "Booteando $NEWNAME ($UUID)"
+xcrun simctl shutdown all || true
+xcrun simctl boot "$UUID" || true
+open -a Simulator --args -CurrentDeviceUDID "$UUID"
+
+# Esperar a que esté listo
+for i in {1..30}; do
+  state="$(xcrun simctl list devices | awk -v id="$UUID" '$0 ~ id {print $0}')"
+  echo "$state" | grep -q "(Booted)" && break || sleep 1
+done
+
+# ========= Lanzamiento con fallback si Xcode no ofrece ese UUID =========
+say "Comprobando destinos de Xcode"
+if ! xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -showdestinations 2>/dev/null | grep -q "$UUID"; then
+  warn "Xcode aún no ofrece $UUID. Buscando un simulador elegible…"
+  FALLBACK_UUID="$(
+    xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -showdestinations 2>/dev/null \
+    | awk '/platform:iOS Simulator/ && /name:iPhone/ && /id:/{print $0}' \
+    | sed -E 's/.*id:([^,}]+).*/\1/' | head -n1
+  )"
+  if [[ -n "$FALLBACK_UUID" ]]; then
+    say "Usando simulador elegible: $FALLBACK_UUID"
+    xcrun simctl boot "$FALLBACK_UUID" || true
+    open -a Simulator --args -CurrentDeviceUDID "$FALLBACK_UUID"
+    TARGET_UUID="$FALLBACK_UUID"
+  else
+    die "No hay simulador elegible. Revisá EXCLUDED_ARCHS en proyecto/Pods."
+  fi
+else
+  TARGET_UUID="$UUID"
+fi
+
+say "Lanzando la app en el simulador ($TARGET_UUID)"
+flutter run -d "$TARGET_UUID"
+# ===== Runtime / Simulador =====
+RUNTIME="$(xcrun simctl list runtimes 2>/dev/null | awk '/iOS/ && /available/ {print $NF}' | tail -n1)"
+if [[ -z "$RUNTIME" ]]; then
+  echo "[!] No hay runtimes iOS; descargando…"
+  sudo xcodebuild -license accept >/dev/null 2>&1 || true
+  xcodebuild -downloadPlatform iOS
+  sudo xcodebuild -runFirstLaunch >/dev/null 2>&1 || true
+  RUNTIME="$(xcrun simctl list runtimes 2>/dev/null | awk '/iOS/ && /available/ {print $NF}' | tail -n1)"
+fi
+[[ -n "$RUNTIME" ]] || { echo "[✗] Sin runtime iOS"; exit 1; }
+
+DEVTYPE="$(xcrun simctl list devicetypes | awk -v n="${DEVICE_NAME:-iPhone 16e}" '$0 ~ ("^"n" \\(") {print $NF; exit}' | tr -d '()')"
+if [[ -z "$DEVTYPE" ]]; then
+  DEVTYPE="$(xcrun simctl list devicetypes | awk '/^iPhone .* \\(/ {print $NF}' | tr -d '()' | head -n1)"
+fi
+[[ -n "$DEVTYPE" ]] || { echo "[✗] Sin device type iPhone"; exit 1; }
+
+NEWNAME="${DEVICE_NAME:-iPhone 16e} (auto-$(date +%Y%m%d-%H%M%S))"
+UUID="$(xcrun simctl create "$NEWNAME" "$DEVTYPE" "$RUNTIME" 2>&1 | tail -n1)"
+[[ "$UUID" =~ ^[0-9A-Fa-f-]{36}$ ]] || { echo "[✗] Falló crear simulador: $UUID"; exit 1; }
+
+xcrun simctl shutdown all || true
+xcrun simctl boot "$UUID" || true
+open -a Simulator --args -CurrentDeviceUDID "$UUID"
+
+# Esperar boot
+for i in {1..30}; do
+  xcrun simctl getenv "$UUID" SIMULATOR_UDID >/dev/null 2>&1 && break
+  sleep 1
+done
+
+# Si Xcode no lo ofrece, buscar uno elegible
+if ! xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -showdestinations 2>/dev/null | grep -q "$UUID"; then
+  echo "[!] Xcode no ofrece $UUID todavía; buscando elegible…"
+  FB="$(xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -showdestinations 2>/dev/null \
+      | awk '/platform:iOS Simulator/ && /name:iPhone/ && /id:/{print $0}' \
+      | sed -E 's/.*id:([^,}]+).*/\1/' | head -n1)"
+  [[ -n "$FB" ]] || { echo "[✗] No hay simulador elegible"; exit 1; }
+  xcrun simctl boot "$FB" || true
+  open -a Simulator --args -CurrentDeviceUDID "$FB"
+  TARGET="$FB"
+else
+  TARGET="$UUID"
+fi
+
+echo "==> Lanzando la app en el simulador ($TARGET)"
+flutter run -d "$TARGET"

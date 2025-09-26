@@ -1,20 +1,34 @@
-/*
-Copyright Gen Digital Inc. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
-
 import UIKit
 import Flutter
+// import WalletSDK   // <- descomentá e importa tu SDK si ya lo tenés como xcframework/pod
 
-@main
+@UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+
+    let controller = window?.rootViewController as! FlutterViewController
+
+    // Canal que tu Dart usa: "WalletSDKPlugin"
+    let channel = FlutterMethodChannel(
+      name: "WalletSDKPlugin",
+      binaryMessenger: controller.binaryMessenger
+    )
+
+    channel.setMethodCallHandler { call, result in
+      switch call.method {
+      case "initSDK":
+        // TODO: invocá acá tu SDK nativo real
+        // try? WalletSDK.shared.initialize()
+        result(nil) // devolver nil = OK (sin error)
+      default:
+        result(FlutterMethodNotImplemented)
+      }
+    }
+
     GeneratedPluginRegistrant.register(with: self)
-      SwiftWalletSDKPlugin.register(with: self.registrar(forPlugin: "WalletSDKPlugin")!)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

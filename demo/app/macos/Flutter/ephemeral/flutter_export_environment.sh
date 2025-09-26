@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/nacho/development/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/nacho/Desktop/projects/wallet-sdk/demo/app"
+export "FLUTTER_ROOT=/Users/pablo/Documents/code/flutter/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/pablo/Documents/Code/flutter-test/openvino-wallet/demo/app"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"
