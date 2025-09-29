@@ -1,8 +1,8 @@
 {
-  "didResolverURI":  "",
-  "evaluateIssuanceURL": "",
-  "evaluatePresentationURL": "",
-  "attestationURL": "",
+  "didResolverURI": "http://localhost:8072",
+  "evaluateIssuanceURL": "https://localhost:8100/wallet/interactions/issuance",
+  "evaluatePresentationURL": "https://localhost:8100/wallet/interactions/presentation",
+  "attestationURL": "http://localhost:8097/profiles/profileID/profileVersion/wallet/attestation/",
   "attestationPayload": {
     "type": "urn:attestation:application:trustbloc",
     "application": {
@@ -10,10 +10,6 @@
       "name": "Trustbloc Wallet",
       "version": "2.0"
     },
-    "compliance": [
-      {
-        "type": "fcra"
-      }
-    ]
+    "compliance": [{ "type": "fcra" }]
   }
 }
