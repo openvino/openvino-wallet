@@ -175,7 +175,7 @@ func doPreAuthCodeFlowTest(t *testing.T) {
 			issuerProfileID:   "bank_issuer_jwtsd",
 			issuerDIDMethod:   "ion",
 			walletDIDMethod:   "jwk",
-			expectedIssuerURI: "http://localhost:8075/oidc/idp/bank_issuer_jwtsd/v1.0",
+			expectedIssuerURI: "https://yankee.openvino.org/admin/oidc/idp/bank_issuer_jwtsd/v1.0",
 			claims: []*claimEntry{
 				{
 					Data: verifiableEmployeeClaims,
@@ -194,7 +194,7 @@ func doPreAuthCodeFlowTest(t *testing.T) {
 				},
 			},
 			expectedDisplayData: helpers.ParseDisplayData(t, expectedDisplayDataBankIssuer),
-			expectedIssuerURI:   "http://localhost:8075/oidc/idp/bank_issuer_attest/v1.0",
+			expectedIssuerURI:   "https://yankee.openvino.org/admin/oidc/idp/bank_issuer_attest/v1.0",
 			acknowledgeReject:   true,
 			trustInfo:           true,
 		},

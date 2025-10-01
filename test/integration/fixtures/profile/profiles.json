@@ -7,7 +7,7 @@
         "groupID": "group_bank_issuer_jwtsd",
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "http://localhost:8075",
+        "url": "https://yankee.openvino.org/admin",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
