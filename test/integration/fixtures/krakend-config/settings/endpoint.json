@@ -30,7 +30,9 @@
     {
       "endpoint": "/issuer/interactions/validate-pre-authorized-code",
       "method": "POST",
+      "protected": true,
       "input_headers": [
+        "X-Tenant-ID",
         "Content-Type"
       ]
     },
