@@ -28,6 +28,13 @@
       ]
     },
     {
+      "endpoint": "/issuer/interactions/validate-pre-authorized-code",
+      "method": "POST",
+      "input_headers": [
+        "Content-Type"
+      ]
+    },
+    {
       "endpoint": "/oidc/authorize",
       "method": "GET",
       "input_query_strings": [
