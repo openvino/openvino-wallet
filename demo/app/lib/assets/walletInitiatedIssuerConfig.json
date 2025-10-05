@@ -1,6 +1,6 @@
 {
   "Openvino" : {
-   "issuerURI": "https://api-gateway.stg.trustbloc.dev/issuer/bank_issuer/v1.0",
+   "issuerURI": "http://127.0.0.1:8075/issuer/bank_issuer/v1.0",
    "scopes": ["openid","profile"],
    "clientID": "oidc4vc_client",
    "redirectURI": "trustbloc-wallet://openid4vci/authcodeflow/callback",
