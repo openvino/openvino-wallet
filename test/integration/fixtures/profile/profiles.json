@@ -7,7 +7,7 @@
         "groupID": "group_bank_issuer_jwtsd",
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/admin",
+        "url": "http://127.0.0.1:8075",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -183,7 +183,7 @@
         "groupID": "group_drivers_license_issuer",
         "name": "Driver's License Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "http://localhost:8075",
+        "url": "http://127.0.0.1:8075",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -409,7 +409,7 @@
         "oidcConfig": {
           "client_id": "7d4u50e7w6nfq8tfayhzplgjf",
           "client_secret_handle": "282ks4fkuqfosus5k0x30abnv",
-          "issuer_well_known": "http://cognito-mock.trustbloc.local:9229/local_5a9GzRvB/.well-known/openid-configuration",
+          "issuer_well_known": "http://127.0.0.1:9229/local_5a9GzRvB/.well-known/openid-configuration",
           "scopes_supported": [
             "openid",
             "profile"
@@ -561,7 +561,7 @@
         }
       },
       "createDID": true,
-      "didDomain": "https://localhost:8075"
+      "didDomain": "http://127.0.0.1:8075"
     },
     {
       "issuer": {
@@ -738,7 +738,7 @@
         }
       },
       "createDID": true,
-      "didDomain": "https://localhost:8075"
+      "didDomain": "http://127.0.0.1:8075"
     },
     {
       "issuer": {
@@ -747,7 +747,7 @@
         "groupID": "group_university_degree_issuer",
         "name": "University Degree Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "http://localhost:8075",
+        "url": "http://127.0.0.1:8075",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -880,7 +880,7 @@
         "groupID": "group_university_degree_issuer",
         "name": "University Degree Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "http://localhost:8075",
+        "url": "http://127.0.0.1:8075",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -1012,7 +1012,7 @@
         "groupID": "group_university_degree_issuer_bbs",
         "name": "University Degree Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "http://localhost:8075",
+        "url": "http://127.0.0.1:8075",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "BbsBlsSignature2020",
@@ -1145,7 +1145,7 @@
         "groupID": "group_university_degree_issuer_v2",
         "name": "University Degree Issuer 2.0",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "http://localhost:8075",
+        "url": "http://127.0.0.1:8075",
         "active": true,
         "vcConfig": {
           "model": "w3c-vc-2.0",
@@ -1340,7 +1340,7 @@
         "groupID": "group_did_ion_issuer",
         "name": "DID Ion Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "http://localhost:8075",
+        "url": "http://127.0.0.1:8075",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",

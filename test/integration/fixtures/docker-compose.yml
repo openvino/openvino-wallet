@@ -12,7 +12,7 @@ services:
     image: ${VC_REST_IMAGE}:${VC_REST_IMAGE_TAG}
     environment:
       - VC_REST_HOST_URL=0.0.0.0:8075
-      - VC_REST_API_GATEWAY_URL=http://localhost:8075
+      - VC_REST_API_GATEWAY_URL=http://127.0.0.1:8075
       - VC_REST_HOST_URL_EXTERNAL=http://vc-rest-echo.trustbloc.local:8075
       - VC_REST_PROFILES_FILE_PATH=/profile/profiles.json
       - VC_REST_ORB_DOMAIN=testnet.orb.local
@@ -43,6 +43,7 @@ services:
       - VC_REDIS_DISABLE_TLS=true
       - VC_OIDC4CI_TRANSACTION_DATA_TTL=5h
       - VC_OIDC4VP_NONCE_DATA_TTL=5h
+      - VC_REST_LOG_LEVEL=debug
     ports:
       - "8075:8075"
       - "48127:48127"
