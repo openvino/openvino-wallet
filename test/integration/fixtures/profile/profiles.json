@@ -385,7 +385,7 @@
         "groupID": "group_bank_issuer_attest",
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
+        "url": "https://yankee.openvino.org/admin",
         "webHook": "https://yankee.openvino.org/verify/openid4ci/webhook",
         "active": true,
         "checks": {
@@ -561,7 +561,7 @@
         }
       },
       "createDID": true,
-      "didDomain": "https://yankee.openvino.org/issuer"
+      "didDomain": "https://yankee.openvino.org/admin"
     },
     {
       "issuer": {
@@ -570,7 +570,7 @@
         "groupID": "group_bank_issuer",
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
+        "url": "https://yankee.openvino.org/admin",
         "webHook": "https://yankee.openvino.org/verify/openid4ci/webhook",
         "active": true,
         "vcConfig": {
@@ -738,7 +738,7 @@
         }
       },
       "createDID": true,
-      "didDomain": "https://yankee.openvino.org/issuer"
+      "didDomain": "https://yankee.openvino.org/admin"
     },
     {
       "issuer": {
@@ -2063,7 +2063,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://vcs.webhook.example.com:8180",
+        "webHook": "https://yankee.openvino.org/verify/openid4ci/webhook",
         "checks": {
           "policy": {
             "policyUrl": "https://yankee.openvino.org/trust-registry/verifier/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/presentation"
