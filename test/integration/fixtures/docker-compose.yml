@@ -73,7 +73,7 @@ services:
     image: ${DID_RESOLVER_IMAGE}:${DID_RESOLVER_IMAGE_TAG}
     environment:
       - DID_REST_HOST_URL=${DID_RESOLVER_HOST}:${DID_RESOLVER_PORT}
-      - DID_REST_HOST_URL_EXTERNAL=http://did-resolver.trustbloc.local:${DID_RESOLVER_PORT}
+      - DID_REST_HOST_URL_EXTERNAL=https://yankee.openvino.org/resolver
       - DID_REST_CONFIG_FILE=/opt/did-resolver/config.json
       - DID_REST_TLS_SYSTEMCERTPOOL=true
       - DID_REST_TLS_CACERTS=/etc/tls/ec-cacert.pem
