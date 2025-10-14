@@ -247,7 +247,9 @@ class PresentationPreviewState extends State<PresentationPreview> {
     });
     var activities = await WalletSDKPlugin.storeActivityLogger();
     var credID = pref.getString('credID');
-    _storageService.addActivities(ActivityDataObj(credID!, activities));
+    if (credID != null) {
+      _storageService.addActivities(ActivityDataObj(credID, activities));
+    }
     _navigateToCredentialShareSuccess(verifierName);
   }
 

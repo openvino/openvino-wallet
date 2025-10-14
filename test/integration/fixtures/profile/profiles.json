@@ -7,7 +7,7 @@
         "groupID": "group_bank_issuer_jwtsd",
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
+        "url": "https://yankee.openvino.org/vc",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -183,7 +183,7 @@
         "groupID": "group_drivers_license_issuer",
         "name": "Driver's License Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
+        "url": "https://yankee.openvino.org/vc",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -196,7 +196,7 @@
           }
         },
         "oidcConfig": {
-          "client_id": "7d4u50e7w6nfq8tfayhzplgjf",
+          "client_id": "7d4u50e7w6nfq8tfayhzplgjf", 
           "client_secret_handle": "282ks4fkuqfosus5k0x30abnv",
           "issuer_well_known": "https://yankee.openvino.org/cognito/local_5a9GzRvB/.well-known/openid-configuration",
           "scopes_supported": [
@@ -385,12 +385,12 @@
         "groupID": "group_bank_issuer_attest",
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
-        "webHook": "https://yankee.openvino.org/verify/openid4ci/webhook",
+        "url": "http://vc-rest-echo.trustbloc.local:8075",
+        "webHook": "http://vc-rest-echo.trustbloc.local:8075/verify/openid4ci/webhook",
         "active": true,
         "checks": {
           "policy": {
-            "policyUrl": "https://yankee.openvino.org/trust-registry/issuer/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/issuance"
+            "policyUrl": "https://mock-trust-registry.example.com:8100/issuer/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/issuance"
           },
           "clientAttestationCheck": {
             "enabled": true
@@ -561,7 +561,7 @@
         }
       },
       "createDID": true,
-      "didDomain": "https://yankee.openvino.org/issuer"
+      "didDomain": "https://localhost:8075"
     },
     {
       "issuer": {
@@ -570,8 +570,8 @@
         "groupID": "group_bank_issuer",
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
-        "webHook": "https://yankee.openvino.org/verify/openid4ci/webhook",
+        "url": "http://vc-rest-echo.trustbloc.local:8075",
+        "webHook": "http://vc-rest-echo.trustbloc.local:8075/verify/openid4ci/webhook",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -738,7 +738,7 @@
         }
       },
       "createDID": true,
-      "didDomain": "https://yankee.openvino.org/issuer"
+      "didDomain": "https://localhost:8075"
     },
     {
       "issuer": {
@@ -747,7 +747,7 @@
         "groupID": "group_university_degree_issuer",
         "name": "University Degree Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
+        "url": "https://yankee.openvino.org/vc",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -880,7 +880,7 @@
         "groupID": "group_university_degree_issuer",
         "name": "University Degree Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
+        "url": "https://yankee.openvino.org/vc",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -1012,7 +1012,7 @@
         "groupID": "group_university_degree_issuer_bbs",
         "name": "University Degree Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
+        "url": "https://yankee.openvino.org/vc",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "BbsBlsSignature2020",
@@ -1145,7 +1145,7 @@
         "groupID": "group_university_degree_issuer_v2",
         "name": "University Degree Issuer 2.0",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
+        "url": "https://yankee.openvino.org/vc",
         "active": true,
         "vcConfig": {
           "model": "w3c-vc-2.0",
@@ -1340,7 +1340,7 @@
         "groupID": "group_did_ion_issuer",
         "name": "DID Ion Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "https://yankee.openvino.org/issuer",
+        "url": "https://yankee.openvino.org/vc",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -2063,10 +2063,10 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://yankee.openvino.org/verify/openid4ci/webhook",
+        "webHook": "http://vcs.webhook.example.com:8180",
         "checks": {
           "policy": {
-            "policyUrl": "https://yankee.openvino.org/trust-registry/verifier/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/presentation"
+            "policyUrl": "https://mock-trust-registry.example.com:8100/verifier/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/presentation"
           },
           "clientAttestationCheck": {
             "enabled": true
