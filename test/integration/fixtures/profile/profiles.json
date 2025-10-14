@@ -385,12 +385,12 @@
         "groupID": "group_bank_issuer_attest",
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "http://vc-rest-echo.trustbloc.local:8075",
-        "webHook": "http://vc-rest-echo.trustbloc.local:8075/verify/openid4ci/webhook",
+        "url": "https://yankee.openvino.org/vc",
+        "webHook": "https://yankee.openvino.org/vc/verify/openid4ci/webhook",
         "active": true,
         "checks": {
           "policy": {
-            "policyUrl": "https://mock-trust-registry.example.com:8100/issuer/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/issuance"
+            "policyUrl": "https://yankee.openvino.org/registry/issuer/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/issuance"
           },
           "clientAttestationCheck": {
             "enabled": true
@@ -561,7 +561,7 @@
         }
       },
       "createDID": true,
-      "didDomain": "https://localhost:8075"
+      "didDomain": "https://yankee.openvino.org/vc"
     },
     {
       "issuer": {
@@ -570,8 +570,8 @@
         "groupID": "group_bank_issuer",
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
-        "url": "http://vc-rest-echo.trustbloc.local:8075",
-        "webHook": "http://vc-rest-echo.trustbloc.local:8075/verify/openid4ci/webhook",
+        "url": "https://yankee.openvino.org/vc",
+        "webHook": "https://yankee.openvino.org/vc/verify/openid4ci/webhook",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -738,7 +738,7 @@
         }
       },
       "createDID": true,
-      "didDomain": "https://localhost:8075"
+      "didDomain": "https://yankee.openvino.org/vc"
     },
     {
       "issuer": {
@@ -1490,7 +1490,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://vcs.webhook.example.com:8180",
+        "webHook": "https://yankee.openvino.org/webhook",
         "checks": {
           "credential": {
             "format": [
@@ -1579,7 +1579,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://vcs.webhook.example.com:8180",
+        "webHook": "https://yankee.openvino.org/webhook",
         "checks": {
           "credential": {
             "format": [
@@ -1678,7 +1678,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://vcs.webhook.example.com:8180",
+        "webHook": "https://yankee.openvino.org/webhook",
         "checks": {
           "credential": {
             "format": [
@@ -1762,7 +1762,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://vcs.webhook.example.com:8180",
+        "webHook": "https://yankee.openvino.org/webhook",
         "checks": {
           "credential": {
             "format": [
@@ -1943,7 +1943,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://vcs.webhook.example.com:8180",
+        "webHook": "https://yankee.openvino.org/webhook",
         "checks": {
           "credential": {
             "format": [
@@ -2063,10 +2063,10 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://vcs.webhook.example.com:8180",
+        "webHook": "https://yankee.openvino.org/webhook",
         "checks": {
           "policy": {
-            "policyUrl": "https://mock-trust-registry.example.com:8100/verifier/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/presentation"
+            "policyUrl": "https://yankee.openvino.org/registry/verifier/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/presentation"
           },
           "clientAttestationCheck": {
             "enabled": true
