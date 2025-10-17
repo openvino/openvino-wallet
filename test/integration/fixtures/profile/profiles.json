@@ -1490,7 +1490,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://localhost:3000/",
+        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
         "checks": {
           "credential": {
             "format": [
@@ -1579,7 +1579,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://localhost:3000/",
+        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
         "checks": {
           "credential": {
             "format": [
@@ -1678,7 +1678,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://localhost:3000/",
+        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
         "checks": {
           "credential": {
             "format": [
@@ -1762,7 +1762,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://localhost:3000/",
+        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
         "checks": {
           "credential": {
             "format": [
@@ -1943,7 +1943,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://localhost:3000/",
+        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
         "checks": {
           "credential": {
             "format": [
@@ -2063,7 +2063,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "http://localhost:3000/",
+        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
         "checks": {
           "policy": {
             "policyUrl": "https://yankee.openvino.org/registry/verifier/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/presentation"
