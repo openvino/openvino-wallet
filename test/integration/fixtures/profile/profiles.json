@@ -164,7 +164,7 @@
                   "locale": "en-US",
                   "logo": {
                     "alt_text": "a square logo of an employee verification",
-                    "uri": "https://example.com/public/logo.png"
+                    "uri": "https://dao.openvino.org/openvinoLogo.png"
                   },
                   "name": "Verified Employee",
                   "text_color": "#FFFFFF"
@@ -365,7 +365,7 @@
                   "name": "Driver's License",
                   "locale": "en-US",
                   "logo": {
-                    "uri": "https://example.com/public/logo.png",
+                    "uri": "https://dao.openvino.org/openvinoLogo.png",
                     "alt_text": "a square logo of a driver's license verification"
                   },
                   "background_color": "#12107c",
@@ -549,7 +549,7 @@
                   "name": "Verified Employee",
                   "locale": "en-US",
                   "logo": {
-                    "uri": "https://example.com/public/logo.png",
+                    "uri": "https://dao.openvino.org/openvinoLogo.png",
                     "alt_text": "a square logo of an employee verification"
                   },
                   "background_color": "#12107c",
@@ -726,7 +726,7 @@
                   "name": "Verified Employee",
                   "locale": "en-US",
                   "logo": {
-                    "uri": "https://example.com/public/logo.png",
+                    "uri": "https://dao.openvino.org/openvinoLogo.png",
                     "alt_text": "a square logo of an employee verification"
                   },
                   "background_color": "#12107c",
@@ -860,7 +860,7 @@
                   "name": "University Degree Credential",
                   "locale": "en-US",
                   "logo": {
-                    "uri": "https://example.com/public/logo.png",
+                    "uri": "https://dao.openvino.org/openvinoLogo.png",
                     "alt_text": "a square logo of a degree verification"
                   },
                   "background_color": "#12107c",
@@ -992,7 +992,7 @@
                   "name": "University Degree Credential",
                   "locale": "en-US",
                   "logo": {
-                    "uri": "https://example.com/public/logo.png",
+                    "uri": "https://dao.openvino.org/openvinoLogo.png",
                     "alt_text": "a square logo of a degree verification"
                   },
                   "background_color": "#12107c",
@@ -1125,7 +1125,7 @@
                   "name": "University Degree Credential",
                   "locale": "en-US",
                   "logo": {
-                    "uri": "https://example.com/public/logo.png",
+                    "uri": "https://dao.openvino.org/openvinoLogo.png",
                     "alt_text": "a square logo of a degree verification"
                   },
                   "background_color": "#12107c",
@@ -1264,7 +1264,7 @@
                   "name": "University Degree Credential",
                   "locale": "en-US",
                   "logo": {
-                    "uri": "https://example.com/public/logo.png",
+                    "uri": "https://dao.openvino.org/openvinoLogo.png",
                     "alt_text": "a square logo of a degree verification"
                   },
                   "background_color": "#12107c",
@@ -1320,7 +1320,7 @@
                   "name": "University Degree Credential",
                   "locale": "en-US",
                   "logo": {
-                    "uri": "https://example.com/public/logo.png",
+                    "uri": "https://dao.openvino.org/openvinoLogo.png",
                     "alt_text": "a square logo of a degree verification"
                   },
                   "background_color": "#12107c",
@@ -1467,7 +1467,7 @@
                   "name": "Verified Employee",
                   "locale": "en-US",
                   "logo": {
-                    "uri": "https://example.com/public/logo.png",
+                    "uri": "https://dao.openvino.org/openvinoLogo.png",
                     "alt_text": "a square logo of an employee verification"
                   },
                   "background_color": "#12107c",
@@ -1490,7 +1490,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://yankee.openvino.org/webhook",
+        "webHook": "http://localhost:3000/",
         "checks": {
           "credential": {
             "format": [
@@ -1579,7 +1579,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://yankee.openvino.org/webhook",
+        "webHook": "http://localhost:3000/",
         "checks": {
           "credential": {
             "format": [
@@ -1678,7 +1678,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://yankee.openvino.org/webhook",
+        "webHook": "http://localhost:3000/",
         "checks": {
           "credential": {
             "format": [
@@ -1762,7 +1762,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://yankee.openvino.org/webhook",
+        "webHook": "http://localhost:3000/",
         "checks": {
           "credential": {
             "format": [
@@ -1943,7 +1943,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://yankee.openvino.org/webhook",
+        "webHook": "http://localhost:3000/",
         "checks": {
           "credential": {
             "format": [
@@ -2063,7 +2063,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://yankee.openvino.org/webhook",
+        "webHook": "http://localhost:3000/",
         "checks": {
           "policy": {
             "policyUrl": "https://yankee.openvino.org/registry/verifier/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/presentation"
