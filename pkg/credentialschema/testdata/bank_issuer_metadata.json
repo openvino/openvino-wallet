@@ -1,6 +1,6 @@
 {
-  "authorization_server": "https://yankee.openvino.org/admin/oidc/authorize",
-  "credential_endpoint": "https://yankee.openvino.org/admin/oidc/credential",
+  "authorization_server": "http://localhost:8075/oidc/authorize",
+  "credential_endpoint": "http://localhost:8075/oidc/credential",
   "display": [
     {
       "locale": "en-US",
@@ -100,5 +100,5 @@
       ]
     }
   },
-  "credential_issuer": "https://yankee.openvino.org/admin/bank_issuer_jwtsd"
+  "credential_issuer": "http://localhost:8075/bank_issuer_jwtsd"
 }
