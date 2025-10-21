@@ -386,7 +386,7 @@
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://yankee.openvino.org/vc",
-        "webHook": "https://yankee.openvino.org/vc/verify/openid4ci/webhook",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/issue",
         "active": true,
         "checks": {
           "policy": {
@@ -571,7 +571,7 @@
         "name": "Bank Issuer",
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://yankee.openvino.org/vc",
-        "webHook": "https://yankee.openvino.org/vc/verify/openid4ci/webhook",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/issue",
         "active": true,
         "vcConfig": {
           "signingAlgorithm": "JsonWebSignature2020",
@@ -1490,7 +1490,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/verify",
         "checks": {
           "credential": {
             "format": [
@@ -1579,7 +1579,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/verify",
         "checks": {
           "credential": {
             "format": [
@@ -1678,7 +1678,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/verify",
         "checks": {
           "credential": {
             "format": [
@@ -1762,7 +1762,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/verify",
         "checks": {
           "credential": {
             "format": [
@@ -1851,7 +1851,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/verify",
         "checks": {
           "credential": {
             "format": [
@@ -1943,7 +1943,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/verify",
         "checks": {
           "credential": {
             "format": [
@@ -2003,7 +2003,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/verify",
         "checks": {
           "credential": {
             "format": [
@@ -2063,7 +2063,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "https://g56nhqll-3000.brs.devtunnels.ms/",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/verify",
         "checks": {
           "policy": {
             "policyUrl": "https://yankee.openvino.org/registry/verifier/policies/i_myprofile_jwt_client_attestation/v1.latest/interactions/presentation"
@@ -2129,7 +2129,7 @@
         "organizationID": "f13d1va9lp403pb9lyj89vk55",
         "url": "https://test-verifier.com",
         "active": true,
-        "webHook": "",
+        "webHook": "https://cqp3nfx9-3000.brs.devtunnels.ms/verify",
         "checks": {
           "credential": {
             "format": [
