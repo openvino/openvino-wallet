@@ -4,6 +4,7 @@ Copyright Gen Digital Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:app/models/activity_data_object.dart';
@@ -16,6 +17,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/widgets/primary_button.dart';
 import 'package:app/widgets/primary_input_field.dart';
 import 'package:app/wallet_sdk/wallet_sdk.dart';
+import 'package:app/services/config_service.dart';
+import 'package:http/http.dart' as http;
 import '../services/attestation.dart';
 import '../widgets/loading_overlay.dart';
 import 'credential_preview.dart';
@@ -190,6 +193,8 @@ class _OTPPage extends State<OTP> {
                                   await _createDid();
                                   pref.setString('userDID', userDIDId);
                                   pref.setString('userDIDDoc', userDIDDoc);
+                                  await _notifyIssuanceEndpoint(
+                                      userDIDId, pref.getStringList('credentialTypes') ?? const []);
                                   final credentials = await WalletSDKPlugin.requestCredential(
                                     _otp!,
                                     attestationVC: await AttestationService.returnAttestationVCIfEnabled(),
@@ -298,5 +303,29 @@ class _OTPPage extends State<OTP> {
 
   _clearOTPInput() {
     otpController.clear();
+  }
+
+  Future<void> _notifyIssuanceEndpoint(String did, List<String> credentialTypes) async {
+    final endpoint = ConfigService.config.attestationURL;
+    if (endpoint.isEmpty) {
+      log('No DID notification endpoint configured; skipping');
+      return;
+    }
+
+    final payload = jsonEncode({
+      'did': did,
+      'credentialTypes': credentialTypes,
+    });
+
+    try {
+      await http.post(
+        Uri.parse(endpoint),
+        headers: {'Content-Type': 'application/json'},
+        body: payload,
+      );
+      log('Sent DID to $endpoint');
+    } catch (error) {
+      log('Failed to post DID to endpoint: $error');
+    }
   }
 }

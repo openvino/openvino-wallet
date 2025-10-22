@@ -4,14 +4,17 @@ Copyright Gen Digital Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:app/main.dart';
 import 'package:app/views/dashboard.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:app/services/config_service.dart';
 import 'package:app/wallet_sdk/wallet_sdk_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/widgets/common_title_appbar.dart';
 import 'package:app/widgets/primary_button.dart';
@@ -287,6 +290,8 @@ class IssuancePreviewState extends State<IssuancePreview> {
     pref.setString('userDID', didID);
     pref.setString('userDIDDoc', didDoc);
 
+    await _notifyIssuanceEndpoint(didID, pref.getStringList('credentialTypes') ?? const []);
+
     final credentials = await WalletSDKPlugin.requestCredential(
       '',
       attestationVC: await AttestationService.returnAttestationVCIfEnabled(),
@@ -316,5 +321,29 @@ class IssuancePreviewState extends State<IssuancePreview> {
     }
 
     return result;
+  }
+
+  Future<void> _notifyIssuanceEndpoint(String did, List<String> credentialTypes) async {
+    final endpoint = ConfigService.config.attestationURL;
+    if (endpoint.isEmpty) {
+      log('No DID notification endpoint configured; skipping');
+      return;
+    }
+
+    final payload = jsonEncode({
+      'did': did,
+      'credentialTypes': credentialTypes,
+    });
+
+    try {
+      await http.post(
+        Uri.parse(endpoint),
+        headers: {'Content-Type': 'application/json'},
+        body: payload,
+      );
+      log('Sent DID to $endpoint');
+    } catch (error) {
+      log('Failed to post DID to endpoint: $error');
+    }
   }
 }

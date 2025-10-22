@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/nacho/development/flutter
-FLUTTER_APPLICATION_PATH=/Users/nacho/Desktop/projects/wallet-sdk/demo/app
+FLUTTER_ROOT=/Users/pablo/Documents/code/flutter/flutter
+FLUTTER_APPLICATION_PATH=/Users/pablo/Documents/Code/Trustblock-wallet/openvino-wallet/demo/app
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
