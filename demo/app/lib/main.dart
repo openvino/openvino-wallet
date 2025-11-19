@@ -36,18 +36,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: CustomLogoAppBar(),
-        body: Container(
-          child: const MainWidget(),
-        ),
-        backgroundColor: const Color(0xffF4F1F5),
+        body: const MainWidget(),
+        backgroundColor: const Color(0xfffcca40),
       ),
-      debugShowCheckedModeBanner: false, //Removing Debug Banner
+      debugShowCheckedModeBanner: true, //Removing Debug Banner
     );
   }
 }
 
 class MainWidget extends StatefulWidget {
-  const MainWidget({Key? key}) : super(key: key);
+  const MainWidget({super.key});
 
   @override
   State<MainWidget> createState() => _MainWidgetState();
@@ -71,11 +69,12 @@ class _MainWidgetState extends State<MainWidget> {
   Widget build(BuildContext context) {
     return Center(
         child: ListView(
+        
       shrinkWrap: true,
       children: <Widget>[
         Container(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
-          child: const Text('OpenVino Sign In',
+          child: const Text('Sign In',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -104,7 +103,6 @@ class _MainWidgetState extends State<MainWidget> {
                 style: TextStyle(fontSize: 16, color: Colors.white)),
           ),
         ),
-      
       ],
     ));
   }

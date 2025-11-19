@@ -16,11 +16,11 @@ class PrimaryButton extends StatelessWidget {
     this.width,
     this.height = 44.0,
     this.gradient = const LinearGradient(
-          colors: [Color(0xff691631), Color(0xff8a204b)],
-          stops: [0, 1],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+      colors: [Color(0XFF000000), Color(0XFF000000)],
+      stops: [0, 1],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
     padding = const EdgeInsets.all(16),
   }) : super(key: key);
 
@@ -37,9 +37,12 @@ class PrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(borderRadius: borderRadius, side: const BorderSide(color: Color(0xffC7C3C8))),
+          backgroundColor: const Color(0xff000000),
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: borderRadius,
+            side: const BorderSide(color: Color(0xff000000)),
+          ),
         ),
         child: child,
       ),

@@ -103,7 +103,7 @@ class QRScannerState extends State<QRScanner> {
                     onPressed: () async {
                       handleOpenIDUrl(context, textController.text.toString());
                     },
-                    width: double.infinity,
+                    width: 300,
                     child: const Text('Submit', style: TextStyle(fontSize: 16, color: Colors.white))),
               ],
             ));

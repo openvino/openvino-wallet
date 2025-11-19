@@ -75,7 +75,7 @@ class SettingsState extends State<Settings> {
           flexibleSpace: Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
-              colors: [Color(0xff691631), Color(0xff8a204b)],
+              colors: [Color(0xfffcca40), Color(0xfffcca40)],
               stops: [0, 1],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -188,7 +188,7 @@ class SettingsState extends State<Settings> {
                       },
                       child: const Text('Sign Out',
                           style: TextStyle(
-                              fontSize: 16, color: Color(0xff6C6D7C))),
+                              fontSize: 16, color: Color(0XFFFFFFFF))),
                       // trying to move to the bottom
                     ),
                   ),

@@ -108,7 +108,7 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
                                 fit: BoxFit.contain,
                               ),
                         trailing: IconButton(
-                          icon: const Icon(Icons.arrow_circle_right_outlined, size: 24, color: Color(0xffB6B7C7)),
+                          icon: const Icon(Icons.arrow_circle_right_outlined, size: 24, color: Color(0xff000000)),
                           onPressed: () async {
                             try {
                               var supportedCredentials =

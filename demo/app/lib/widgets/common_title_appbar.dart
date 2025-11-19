@@ -21,7 +21,7 @@ class CustomTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: Text(pageTitle!,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                fontSize: 18, fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, fontFamily: 'SF Pro', color: Colors.white)),
+                fontSize: 18, fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, fontFamily: 'SF Pro', color: Colors.black)),
         backgroundColor: const Color(0xffEEEAEE),
         actions: addCloseIcon == true
             ? [
@@ -29,7 +29,7 @@ class CustomTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () =>
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Dashboard())),
                   icon: const Icon(Icons.close),
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ]
             : [],
@@ -44,7 +44,7 @@ class CustomTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 fit: BoxFit.fill,
               ),
               gradient:LinearGradient(
-          colors: [Color(0xff691631), Color(0xff8a204b)],
+          colors: [Color(0xfffcca40), Color(0xfffcca40)],
           stops: [0, 1],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
