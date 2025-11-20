@@ -144,7 +144,7 @@
 							],
 							"display": [
 								{
-									"name": "Verified Employee",
+									"name": "Bank Client",
 									"locale": "en-US",
 									"logo": {
 										"uri": "https://dao.openvino.org/openvinoLogo.png",
