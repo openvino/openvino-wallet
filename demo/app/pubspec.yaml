@@ -68,10 +68,10 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.1
 
 flutter_launcher_name:
-  name: "ManatokoID"
+  name: "Aleph"
 
 flutter_launcher_icons:
-  image_path: "images/appicon.png"
+  image_path: "images/appicon.webp"
   android: true
   ios: true
 # For information on the generic Dart part of this file, see the
