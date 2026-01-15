@@ -12,6 +12,7 @@ import 'package:app/widgets/primary_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'wallet_sdk/wallet_sdk.dart';
 import 'views/dashboard.dart';
@@ -54,57 +55,237 @@ class MainWidget extends StatefulWidget {
 class _MainWidgetState extends State<MainWidget> {
   final TextEditingController _usernameController = TextEditingController();
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  final LocalAuthentication _localAuth = LocalAuthentication();
   String? initialLink;
+  String? _storedUsername;
+  bool _biometricsAvailable = false;
+  bool _checkingAuthState = true;
 
   @override
   void initState() {
     super.initState();
+
+    _initAuthState();
 
     getInitialLink().then((value) {
       initialLink = value;
     });
   }
 
+  Future<void> _initAuthState() async {
+    final SharedPreferences pref = await prefs;
+    final storedUsername = pref.getString('userLoggedIn');
+    bool supported = false;
+    try {
+      supported = await _localAuth.isDeviceSupported() && await _localAuth.canCheckBiometrics;
+    } catch (_) {}
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _storedUsername = storedUsername;
+      _biometricsAvailable = supported;
+      _checkingAuthState = false;
+      if (storedUsername != null) {
+        _usernameController.text = storedUsername;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: ListView(
-        
-      shrinkWrap: true,
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
-          child: const Text('Sign In',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  fontFamily: 'SF Pro')),
+    if (_checkingAuthState) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Scaffold(
+      backgroundColor: const Color(0xfffcca40),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned(
+              top: -120,
+              right: -80,
+              child: _decorativeBlob(
+                const Color(0xffffd86a),
+                220,
+              ),
+            ),
+            Positioned(
+              bottom: -140,
+              left: -60,
+              child: _decorativeBlob(
+                const Color(0xffffe89b),
+                240,
+              ),
+            ),
+            Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Manatoko Wallet',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'SF Pro',
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff190C21),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _storedUsername == null
+                          ? 'Create your local profile and unlock with biometrics.'
+                          : 'Welcome back, unlock with biometrics to continue.',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: 'SF Pro',
+                        fontSize: 14,
+                        color: Color(0xff3b2b45),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 24,
+                            offset: const Offset(0, 12),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            _storedUsername == null ? 'Create Account' : 'Unlock Wallet',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              fontFamily: 'SF Pro',
+                              color: Color(0xff190C21),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          if (_storedUsername == null)
+                            PrimaryInputField(
+                              textController: _usernameController,
+                              titleTextAlign: TextAlign.center,
+                              labelText: 'Username',
+                              textInputFormatter: FilteringTextInputFormatter.singleLineFormatter,
+                            )
+                          else
+                            Column(
+                              children: [
+                                Text(
+                                  _storedUsername ?? '',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xff190C21),
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Biometrics required to unlock.',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xff6C6D7C),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          const SizedBox(height: 20),
+                          PrimaryButton(
+                            width: double.infinity,
+                            onPressed: () async {
+                              if (!_biometricsAvailable) {
+                                _showMessage('Biometric authentication is not available on this device.');
+                                return;
+                              }
+
+                              if (_storedUsername == null) {
+                                final username = _usernameController.text.trim();
+                                if (username.isEmpty) {
+                                  _showMessage('Please enter a username.');
+                                  return;
+                                }
+                                final SharedPreferences pref = await prefs;
+                                await pref.setString('userLoggedIn', username);
+                                setState(() {
+                                  _storedUsername = username;
+                                });
+                              }
+
+                              await _authenticateAndLogin();
+                            },
+                            child: Text(
+                              _storedUsername == null ? 'Register & Unlock' : 'Unlock',
+                              style: const TextStyle(fontSize: 16, color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-        Container(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-          child: PrimaryInputField(
-            textController: _usernameController,
-            titleTextAlign: TextAlign.center,
-            labelText: 'Username',
-            textInputFormatter: FilteringTextInputFormatter.singleLineFormatter,
-          ),
+      ),
+    );
+  }
+
+  Future<void> _authenticateAndLogin() async {
+    bool authenticated = false;
+    try {
+      authenticated = await _localAuth.authenticate(
+        localizedReason: 'Use biometrics to unlock your wallet.',
+        options: const AuthenticationOptions(
+          biometricOnly: true,
+          stickyAuth: true,
         ),
-        Container(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-          child: PrimaryButton(
-            width: double.infinity,
-            onPressed: () async {
-              final SharedPreferences pref = await prefs;
-              pref.setString('userLoggedIn', _usernameController.text);
-              _loginCompleted();
-            },
-            child: const Text('Sign In ',
-                style: TextStyle(fontSize: 16, color: Colors.white)),
-          ),
-        ),
-      ],
-    ));
+      );
+    } on PlatformException {
+      authenticated = false;
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    if (!authenticated) {
+      _showMessage('Authentication failed.');
+      return;
+    }
+
+    _loginCompleted();
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Widget _decorativeBlob(Color color, double size) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(size / 2),
+      ),
+    );
   }
 
   _loginCompleted() async {
