@@ -9,6 +9,7 @@ import 'dart:developer';
 
 import 'package:app/main.dart';
 import 'package:app/models/store_credential_data.dart';
+import 'package:app/services/storage_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app/widgets/primary_button.dart';
@@ -26,6 +27,7 @@ class Settings extends StatefulWidget {
 class SettingsState extends State<Settings> {
   final TextEditingController usernameController = TextEditingController();
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  final StorageService _storageService = StorageService();
   bool isSwitched = false;
   String walletSDKVersion = '';
   String gitRevision = '';
@@ -194,6 +196,16 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
               ),
+              Align(
+                alignment: Alignment.center,
+                child: TextButton(
+                  onPressed: _confirmRestore,
+                  child: const Text(
+                    'Restore Application',
+                    style: TextStyle(color: Colors.redAccent),
+                  ),
+                ),
+              ),
               Expanded(
                 child: Column(
                   children: [
@@ -243,7 +255,7 @@ class SettingsState extends State<Settings> {
   getUserDetails() async {
     UserLoginDetails userLoginDetails = await getUser();
     log('userLoginDetails -> $userLoginDetails');
-    usernameController.text = userLoginDetails.username!;
+    usernameController.text = userLoginDetails.username ?? '';
   }
 
   saveDidSelection() async {
@@ -281,5 +293,47 @@ class SettingsState extends State<Settings> {
   signOut() async {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const MyApp()));
+  }
+
+  Future<void> _confirmRestore() async {
+    final restore = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Restore Application'),
+        content: const Text('This will delete all local data and credentials. Continue?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (restore == true) {
+      await _restoreApplication();
+    }
+  }
+
+  Future<void> _restoreApplication() async {
+    final SharedPreferences pref = await prefs;
+    await _storageService.deleteAllData();
+    await pref.clear();
+
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const MyApp()),
+      (_) => false,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Application data cleared.')),
+    );
   }
 }
