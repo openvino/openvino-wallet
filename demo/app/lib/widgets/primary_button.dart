@@ -1,3 +1,4 @@
+import 'package:app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -37,11 +38,10 @@ class PrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xff000000),
+          backgroundColor: AppColors.accent,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: borderRadius,
-            side: const BorderSide(color: Color(0xff000000)),
           ),
         ),
         child: child,

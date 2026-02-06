@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 import 'dart:developer';
 
 import 'package:app/services/storage_service.dart';
+import 'package:app/theme/app_colors.dart';
 import 'package:app/widgets/credential_card.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,6 +52,7 @@ class _CredentialListState extends State<CredentialList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: CustomLogoAppBar(),
       body: Center(
         child: Stack(
@@ -60,7 +62,10 @@ class _CredentialListState extends State<CredentialList> {
                 alignment: Alignment.topLeft,
                 child: const Text(
                   'Credentials',
-                  style: TextStyle(color: Color(0xff190C21), fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(
+                      color: AppColors.textOnAccent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
                 )),
             Container(
               padding: const EdgeInsets.fromLTRB(24, 40, 16, 24),
@@ -68,7 +73,10 @@ class _CredentialListState extends State<CredentialList> {
               child: _loading
                   ? const CircularProgressIndicator()
                   : _credentialList.isEmpty
-                      ? const Text('No credentials found')
+                      ? const Text(
+                          'No credentials found',
+                          style: TextStyle(color: AppColors.textOnAccent),
+                        )
                       : ListView.builder(
                           itemCount: _credentialList.length,
                           padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -79,7 +87,8 @@ class _CredentialListState extends State<CredentialList> {
                                 delete: () async {
                                   await _storageService
                                       .deleteData(_credentialList[index])
-                                      .then((value) => _credentialList.removeAt(index));
+                                      .then((value) =>
+                                          _credentialList.removeAt(index));
                                   setState(() {});
                                 },
                                 isDetailArrowRequired: false);

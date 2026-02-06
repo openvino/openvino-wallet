@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 
 import 'package:app/scenarios/handle_openid_url.dart';
 import 'package:app/services/config_service.dart';
+import 'package:app/theme/app_colors.dart';
 import 'package:app/widgets/common_logo_appbar.dart';
 import 'package:app/widgets/primary_input_field.dart';
 import 'package:app/widgets/primary_button.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: CustomLogoAppBar(),
         body: const MainWidget(),
-        backgroundColor: const Color(0xfffcca40),
+        backgroundColor: AppColors.background,
       ),
       debugShowCheckedModeBanner: true, //Removing Debug Banner
     );
@@ -77,7 +78,8 @@ class _MainWidgetState extends State<MainWidget> {
     final storedUsername = pref.getString('userLoggedIn');
     bool supported = false;
     try {
-      supported = await _localAuth.isDeviceSupported() && await _localAuth.canCheckBiometrics;
+      supported = await _localAuth.isDeviceSupported() &&
+          await _localAuth.canCheckBiometrics;
     } catch (_) {}
 
     if (!mounted) {
@@ -101,41 +103,20 @@ class _MainWidgetState extends State<MainWidget> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xfffcca40),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Stack(
           children: [
-            Positioned(
-              top: -120,
-              right: -80,
-              child: _decorativeBlob(
-                const Color(0xffffd86a),
-                220,
-              ),
-            ),
-            Positioned(
-              bottom: -140,
-              left: -60,
-              child: _decorativeBlob(
-                const Color(0xffffe89b),
-                240,
-              ),
-            ),
             Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'Manatoko Wallet',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'SF Pro',
-                        fontSize: 28,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff190C21),
-                      ),
+                    const Image(
+                      image: AssetImage('lib/assets/images/aleph_logo.png'),
+                      height: 50,
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -146,14 +127,14 @@ class _MainWidgetState extends State<MainWidget> {
                       style: const TextStyle(
                         fontFamily: 'SF Pro',
                         fontSize: 14,
-                        color: Color(0xff3b2b45),
+                        color: AppColors.textOnAccent,
                       ),
                     ),
                     const SizedBox(height: 32),
                     Container(
                       padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.textOnAccent,
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
@@ -166,7 +147,9 @@ class _MainWidgetState extends State<MainWidget> {
                       child: Column(
                         children: [
                           Text(
-                            _storedUsername == null ? 'Create Account' : 'Unlock Wallet',
+                            _storedUsername == null
+                                ? 'Create Account'
+                                : 'Unlock Wallet',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
@@ -181,7 +164,8 @@ class _MainWidgetState extends State<MainWidget> {
                               textController: _usernameController,
                               titleTextAlign: TextAlign.center,
                               labelText: 'Username',
-                              textInputFormatter: FilteringTextInputFormatter.singleLineFormatter,
+                              textInputFormatter: FilteringTextInputFormatter
+                                  .singleLineFormatter,
                             )
                           else
                             Column(
@@ -210,12 +194,14 @@ class _MainWidgetState extends State<MainWidget> {
                             width: double.infinity,
                             onPressed: () async {
                               if (!_biometricsAvailable) {
-                                _showMessage('Biometric authentication is not available on this device.');
+                                _showMessage(
+                                    'Biometric authentication is not available on this device.');
                                 return;
                               }
 
                               if (_storedUsername == null) {
-                                final username = _usernameController.text.trim();
+                                final username =
+                                    _usernameController.text.trim();
                                 if (username.isEmpty) {
                                   _showMessage('Please enter a username.');
                                   return;
@@ -230,8 +216,11 @@ class _MainWidgetState extends State<MainWidget> {
                               await _authenticateAndLogin();
                             },
                             child: Text(
-                              _storedUsername == null ? 'Register & Unlock' : 'Unlock',
-                              style: const TextStyle(fontSize: 16, color: Colors.white),
+                              _storedUsername == null
+                                  ? 'Register & Unlock'
+                                  : 'Unlock',
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.white),
                             ),
                           ),
                         ],
@@ -274,7 +263,8 @@ class _MainWidgetState extends State<MainWidget> {
   }
 
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   Widget _decorativeBlob(Color color, double size) {

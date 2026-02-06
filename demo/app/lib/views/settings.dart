@@ -10,6 +10,7 @@ import 'dart:developer';
 import 'package:app/main.dart';
 import 'package:app/models/store_credential_data.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app/widgets/primary_button.dart';
@@ -63,176 +64,116 @@ class SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: AppColors.background,
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+          toolbarHeight: 50,
           automaticallyImplyLeading: false,
           title: const Text(
             'Settings',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(
+                fontSize: 18,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'SF Pro',
+                color: AppColors.textOnAccent),
           ),
-          backgroundColor: const Color(0xffEEEAEE),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              colors: [Color(0xfffcca40), Color(0xfffcca40)],
-              stops: [0, 1],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            )),
-          ),
+          backgroundColor: AppColors.background,
         ),
-        body: Container(
-          height: 900,
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Flexible(
-                child: TextFormField(
-                    enabled: false,
-                    controller: usernameController,
-                    decoration: const InputDecoration(
-                      fillColor: Color(0xff8D8A8E),
-                      border: UnderlineInputBorder(),
-                      labelText: 'Username',
-                      labelStyle: TextStyle(
-                          color: Color(0xff190C21),
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'SF Pro',
-                          fontSize: 16,
-                          fontStyle: FontStyle.normal),
-                    )),
-              ),
-              SwitchListTile(
-                value: isSwitched,
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Dev Mode',
-                    style: TextStyle(
-                        color: Color(0xff190C21),
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'SF Pro',
-                        fontSize: 14,
-                        fontStyle: FontStyle.normal)),
-                onChanged: (value) {
-                  setState(() {
-                    isSwitched = value;
-                  });
-                  saveDevMode();
-                },
-                activeTrackColor: Colors.deepPurple,
-                activeColor: Colors.deepPurpleAccent,
-              ),
-              DropdownButtonFormField<String>(
-                value: selectedDIDType,
-                decoration: const InputDecoration(
-                  labelText: 'Select DID Method',
-                  filled: false,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Text(
+                  'Account',
+                  style: TextStyle(
+                    letterSpacing: 1.2,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textSecondary,
+                  ),
                 ),
-                icon: const Icon(Icons.arrow_drop_down),
-                iconSize: 24,
-                elevation: 16,
-                isExpanded: true,
-                items:
-                    supportedDids.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedDIDType = value as String;
-                    saveDidSelection();
-                  });
-                },
-              ),
-              DropdownButtonFormField<String>(
-                value: selectedKeyType,
-                decoration: const InputDecoration(
-                  labelText: 'Select Key Type',
-                  filled: false,
+                const SizedBox(height: 12),
+                _SettingsCard(
+                  child: ListTile(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    leading: const CircleAvatar(
+                      backgroundColor: AppColors.accent,
+                      child: Icon(Icons.person, color: AppColors.textOnAccent),
+                    ),
+                    title: Text(
+                      usernameController.text.isEmpty
+                          ? 'Guest'
+                          : usernameController.text,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    subtitle: const Text(
+                      'Username',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ),
                 ),
-                icon: const Icon(Icons.arrow_drop_down),
-                iconSize: 24,
-                elevation: 16,
-                isExpanded: true,
-                items: supportedKeyTypes
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedKeyType = value as String;
-                    saveDidKeySelection();
-                  });
-                },
-              ),
-              const SizedBox(height: 100),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    margin: const EdgeInsets.all(5),
-                    width: 327,
-                    child: PrimaryButton(
-                      gradient: const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Color(0xffFFFFFF), Color(0xffFFFFFF)]),
-                      onPressed: () {
-                        signOut();
-                      },
-                      child: const Text('Sign Out',
+                const SizedBox(height: 24),
+                const Text(
+                  'Actions',
+                  style: TextStyle(
+                    letterSpacing: 1.2,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                _SettingsCard(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
+                    child: Column(
+                      children: [
+                        PrimaryButton(
+                          width: double.infinity,
+                          onPressed: signOut,
+                          child: const Text(
+                            'Sign Out',
+                            style: TextStyle(
+                                fontSize: 16, color: AppColors.textOnAccent),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        PrimaryButton(
+                          width: double.infinity,
+                          onPressed: _confirmRestore,
+                          child: const Text(
+                            'Restore Application',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'This removes local credentials and settings.',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 16, color: Color(0XFFFFFFFF))),
-                      // trying to move to the bottom
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: TextButton(
-                  onPressed: _confirmRestore,
-                  child: const Text(
-                    'Restore Application',
-                    style: TextStyle(color: Colors.redAccent),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text('Version: $walletSDKVersion',
-                          textAlign: TextAlign.left,
-                          style: const TextStyle(
-                              fontSize: 12, color: Color(0xff6C6D7C))),
-                    ),
-                    Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text('GitRevision: $gitRevision',
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                                fontSize: 12, color: Color(0xff6C6D7C)))),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text('Build Time: $buildTimeRev',
-                          textAlign: TextAlign.left,
-                          style: const TextStyle(
-                              fontSize: 12, color: Color(0xff6C6D7C))),
-                    )
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }
@@ -255,7 +196,12 @@ class SettingsState extends State<Settings> {
   getUserDetails() async {
     UserLoginDetails userLoginDetails = await getUser();
     log('userLoginDetails -> $userLoginDetails');
-    usernameController.text = userLoginDetails.username ?? '';
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      usernameController.text = userLoginDetails.username ?? '';
+    });
   }
 
   saveDidSelection() async {
@@ -300,7 +246,8 @@ class SettingsState extends State<Settings> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Restore Application'),
-        content: const Text('This will delete all local data and credentials. Continue?'),
+        content: const Text(
+            'This will delete all local data and credentials. Continue?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -334,6 +281,24 @@ class SettingsState extends State<Settings> {
     );
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Application data cleared.')),
+    );
+  }
+}
+
+class _SettingsCard extends StatelessWidget {
+  final Widget child;
+
+  const _SettingsCard({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.surfaceBorder),
+      ),
+      child: child,
     );
   }
 }

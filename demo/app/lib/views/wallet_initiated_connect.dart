@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 import 'package:app/models/connect_issuer_config.dart';
 import 'package:app/models/connect_issuer_config_value.dart';
 import 'package:app/services/config_service.dart';
+import 'package:app/theme/app_colors.dart';
 import 'package:app/views/supported_credentials_list.dart';
 import 'package:app/wallet_sdk/wallet_sdk_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -55,6 +56,7 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: const CustomTitleAppBar(
         pageTitle: 'Wallet Supported Issuer',
         addCloseIcon: false,
@@ -70,15 +72,13 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
               itemBuilder: (context, index) {
                 return Column(children: [
                   Container(
-                    height: 80,
                     alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
-                        color: connectIssuerConfigList.elementAt(index).value.backgroundColor.isNotEmpty
-                            ? Color(int.parse(
-                                '0xff${connectIssuerConfigList.elementAt(index).value.backgroundColor.replaceAll('#', '')}'))
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [BoxShadow(offset: const Offset(3, 3), color: Colors.grey.shade300, blurRadius: 5)]),
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.surfaceBorder)),
                     /*     color: connectIssuerConfigList.elementAt(index).value.backgroundColor.isNotEmpty
                       ? Color(int.parse(
                           '0xff${connectIssuerConfigList.elementAt(index).value.backgroundColor.replaceAll('#', '')}'))
@@ -90,17 +90,24 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: connectIssuerConfigList.elementAt(index).value.textColor.isNotEmpty
-                                ? Color(int.parse(
-                                    '0xff${connectIssuerConfigList.first.value.textColor.replaceAll('#', '')}'))
-                                : const Color(0xff190C21),
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        subtitle: Text(
+                          connectIssuerConfigList.elementAt(index).value.description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
                           ),
                         ),
                         leading: connectIssuerConfigList.elementAt(index).value.logo == null
                             ? const SizedBox.shrink()
                             : CachedNetworkImage(
                                 imageUrl: connectIssuerConfigList.elementAt(index).value.logo,
-                                placeholder: (context, url) => const CircularProgressIndicator(),
+                                placeholder: (context, url) =>
+                                    const SizedBox(width: 20, height: 20, child: CircularProgressIndicator()),
                                 errorWidget: (context, url, error) =>
                                     Image.asset('lib/assets/images/logoIcon.png', fit: BoxFit.contain),
                                 width: 50,
@@ -108,7 +115,7 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
                                 fit: BoxFit.contain,
                               ),
                         trailing: IconButton(
-                          icon: const Icon(Icons.arrow_circle_right_outlined, size: 24, color: Color(0xff000000)),
+                          icon: const Icon(Icons.arrow_circle_right_outlined, size: 24, color: AppColors.accent),
                           onPressed: () async {
                             try {
                               var supportedCredentials =
@@ -155,13 +162,13 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                tileColor: const Color(0xffFBF8FC),
+                                tileColor: AppColors.surface,
                                 title: SelectableText(
                                   _requestErrorTitleMsg ?? '',
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xff190C21),
+                                    color: AppColors.textPrimary,
                                   ),
                                   textAlign: TextAlign.start,
                                 ),
@@ -170,7 +177,7 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xff6C6D7C),
+                                    color: AppColors.textSecondary,
                                   ),
                                   textAlign: TextAlign.start,
                                 ),

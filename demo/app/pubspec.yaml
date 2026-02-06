@@ -104,6 +104,8 @@ flutter:
    - lib/assets/images/error_icon.svg
    - lib/assets/images/tick-checked.svg
    - lib/assets/
+   - lib/assets/images/aleph_logo.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 import 'dart:async';
 import 'dart:developer';
 import 'package:app/scenarios/handle_openid_url.dart';
+import 'package:app/theme/app_colors.dart';
 import 'package:app/widgets/common_title_appbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -51,22 +52,25 @@ class QRScannerState extends State<QRScanner> {
   Widget build(BuildContext context) {
     return isRealDevice
         ? Scaffold(
+            backgroundColor: AppColors.background,
             appBar: const CustomTitleAppBar(
               pageTitle: 'Scan QR',
               addCloseIcon: true,
               height: 50,
             ),
             body: MobileScanner(
-                controller: controller,
-                onDetect: (capture) {
-                  final List<Barcode> barcodes = capture.barcodes;
-                  for (final barcode in barcodes) {
-                    handleOpenIDUrl(context, barcode.rawValue ?? 'No Data found in QR');
-                  }
-                  controller.dispose();
-                }),
+              controller: controller,
+              onDetect: (capture) {
+                final List<Barcode> barcodes = capture.barcodes;
+                for (final barcode in barcodes) {
+                  handleOpenIDUrl(context, barcode.rawValue ?? 'No Data found in QR');
+                }
+                controller.dispose();
+              },
+            ),
           )
         : Scaffold(
+            backgroundColor: AppColors.background,
             appBar: const CustomTitleAppBar(
               pageTitle: 'QR Code Simulator',
               addCloseIcon: true,
@@ -75,6 +79,17 @@ class QRScannerState extends State<QRScanner> {
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(24, 24, 24, 8),
+                  child: Text(
+                    'Paste a QR payload to simulate scanning.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ),
                 Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 32),
                     child: GestureDetector(
@@ -90,9 +105,19 @@ class QRScannerState extends State<QRScanner> {
                         minLines: 1,
                         maxLines: 7,
                         autofocus: true,
+                        style: const TextStyle(color: AppColors.textPrimary),
                         decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: AppColors.surface,
                           border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.surfaceBorder),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.accent),
+                          ),
                           labelText: 'Paste the qr code url',
+                          labelStyle: TextStyle(color: AppColors.textSecondary),
                         ),
                       ),
                     )),

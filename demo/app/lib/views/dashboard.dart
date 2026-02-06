@@ -4,6 +4,7 @@ Copyright Gen Digital Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
+import 'package:app/theme/app_colors.dart';
 import 'package:app/views/credential_list.dart';
 import 'package:app/views/wallet_initiated_connect.dart';
 import 'package:app/views/settings.dart';
@@ -40,11 +41,13 @@ class _DashboardState extends State<Dashboard> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+            
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.qr_code),
@@ -61,7 +64,9 @@ class _DashboardState extends State<Dashboard> {
         ],
         currentIndex: _selectedIndex,
         selectedLabelStyle: const TextStyle(fontFamily: 'SF Pro', fontSize: 12, fontWeight: FontWeight.bold),
-        selectedItemColor: const Color(0xfffcca40),
+        selectedItemColor:  AppColors.accent,
+        unselectedItemColor: AppColors.textOnAccent,
+        backgroundColor: AppColors.background,
         onTap: _onItemTapped,
       ),
     );
