@@ -72,9 +72,23 @@ flutter_launcher_name:
   name: "Aleph"
 
 flutter_launcher_icons:
-  image_path: "images/appicon.webp"
+  image_path: "images/appicon.png"
   android: true
   ios: true
+  web:
+    generate: true
+    image_path: "images/appicon.png"
+    background_color: "#FFFFFF"
+    theme_color: "#FFFFFF"
+  macos:
+    generate: true
+    image_path: "images/appicon.png"
+  windows:
+    generate: true
+    image_path: "images/appicon.png"
+  linux:
+    generate: true
+    image_path: "images/appicon.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
