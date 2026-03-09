@@ -13,6 +13,7 @@ import 'package:app/widgets/primary_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'wallet_sdk/wallet_sdk.dart';
@@ -25,7 +26,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ConfigService.init();
   await WalletSDKPlugin.initSDK(ConfigService.config.didResolverURI);
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+  await Future.delayed(const Duration(seconds: 3));
+    FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
 
@@ -41,7 +46,7 @@ class MyApp extends StatelessWidget {
         body: const MainWidget(),
         backgroundColor: AppColors.background,
       ),
-      debugShowCheckedModeBanner: true, //Removing Debug Banner
+      debugShowCheckedModeBanner: false, //Removing Debug Banner
     );
   }
 }
@@ -94,6 +99,8 @@ class _MainWidgetState extends State<MainWidget> {
         _usernameController.text = storedUsername;
       }
     });
+
+    
   }
 
   @override

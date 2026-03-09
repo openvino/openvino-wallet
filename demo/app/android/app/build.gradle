@@ -54,7 +54,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "dev.openvino.wallet"
+        applicationId "com.openvinodev.aleph"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion 24
@@ -84,7 +84,7 @@ android {
             it.buildConfigField 'String', 'INITIATE_ISSUANCE_URLS_AUTH_CODE_FLOW', '"' + INITIATE_ISSUANCE_URLS_AUTH_CODE_FLOW + '"'
         }
     }
-    namespace 'dev.openvino.wallet'
+    namespace 'com.openvinodev.aleph'
 }
 
 flutter {

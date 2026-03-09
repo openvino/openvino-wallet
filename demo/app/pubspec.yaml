@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.4.7
   flutter_secure_storage: ^9.2.2
   flutter_svg: ^2.0.9
   http: ^1.2.2
@@ -56,7 +57,7 @@ dependencies:
 
 dev_dependencies:
   change_app_package_name: ^1.5.0
-  flutter_launcher_icons: ^0.14.1
+  flutter_launcher_icons: ^0.14.4
   flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
@@ -67,23 +68,28 @@ flutter_launcher_name:
   name: "Aleph"
 
 flutter_launcher_icons:
-  image_path: "images/appicon.png"
-  android: true
+  android: "launcher_icon"
   ios: true
+  image_path: "images/appicon.jpg"
+  min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "images/appicon.png"
-    background_color: "#FFFFFF"
-    theme_color: "#FFFFFF"
-  macos:
-    generate: true
-    image_path: "images/appicon.png"
+    image_path: "images/appicon.jpg"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
   windows:
     generate: true
-    image_path: "images/appicon.png"
-  linux:
+    image_path: "images/appicon.jpg"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
     generate: true
-    image_path: "images/appicon.png"
+    image_path: "images/appicon.jpg"
+
+flutter_native_splash:
+  color: "#161616"
+  image: "images/appicon.jpg"
+ 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 dependency_overrides:
@@ -113,26 +119,4 @@ flutter:
     - lib/assets/images/tick-checked.svg
     - lib/assets/
     - lib/assets/images/aleph_logo.png
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
+    - images/

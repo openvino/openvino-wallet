@@ -85,3 +85,6 @@ Install the SDK Tools by following:
 Preferences | Appearance & Behavior | System Settings | Android SDK | SDK Tools | Android Tools 
 Preferences | Appearance & Behavior | System Settings | Android SDK | SDK Tools | NDK
 ```
+
+
+dart run change_app_package_name:main com.aleph.wallet
