@@ -6,7 +6,6 @@ SPDX-License-Identifier: Apache-2.0
 
 import 'package:app/theme/app_colors.dart';
 import 'package:app/views/credential_list.dart';
-import 'package:app/views/wallet_initiated_connect.dart';
 import 'package:app/views/settings.dart';
 import 'package:flutter/material.dart';
 import 'scanner.dart';
@@ -24,7 +23,7 @@ class _DashboardState extends State<Dashboard> {
   static final _widgetOptions = <Widget>[
     const CredentialList(),
     const QRScanner(),
-    const ConnectIssuerList(),
+    // Sensitive wallet-initiated issuance view hidden for now.
     const Settings(),
   ];
 
@@ -54,10 +53,6 @@ class _DashboardState extends State<Dashboard> {
             label: 'Scan QR',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Connect',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),
@@ -72,5 +67,4 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
-
 

@@ -86,7 +86,11 @@ func ValidateLinkedDomains(did string, resolver api.DIDResolver,
 
 	verErr := client.VerifyDIDAndDomain(did, uri)
 	if verErr != nil {
-		didBelongsToDomain = false
+		return false, uri, walleterror.NewExecutionError(
+			diderrors.Module,
+			diderrors.DomainAndDidVerificationCode,
+			diderrors.DomainAndDidVerificationFailed,
+			fmt.Errorf("verify DID %s against domain %s: %w", did, uri, verErr))
 	}
 
 	return didBelongsToDomain, uri, nil

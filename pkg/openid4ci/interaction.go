@@ -693,7 +693,7 @@ func (i *interaction) verifyIssuer() (string, error) {
 			diderrors.Module,
 			diderrors.DomainAndDidVerificationCode,
 			diderrors.DomainAndDidVerificationFailed,
-			fmt.Errorf("DID service validation failed: %w", err))
+			fmt.Errorf("DID service validation failed for DID %s and domain %s", trustInfo.DID, trustInfo.Domain))
 	}
 
 	return trustInfo.Domain, nil
