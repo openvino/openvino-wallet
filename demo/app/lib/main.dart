@@ -18,19 +18,25 @@ import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'wallet_sdk/wallet_sdk.dart';
 import 'views/dashboard.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:uni_links/uni_links.dart'
+    if (dart.library.js_interop) 'stubs/uni_links_stub.dart';
 
 final WalletSDKPlugin = WalletSDK();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ConfigService.init();
-  await WalletSDKPlugin.initSDK(ConfigService.config.didResolverURI);
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
-  await Future.delayed(const Duration(seconds: 3));
+  try {
+    await WalletSDKPlugin.initSDK(ConfigService.config.didResolverURI);
+  } catch (e) {
+    debugPrint('WalletSDK initSDK failed: $e');
+  }
+  if (!kIsWeb) {
+    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    await Future.delayed(const Duration(seconds: 3));
     FlutterNativeSplash.remove();
+  }
   runApp(const MyApp());
 }
 
@@ -200,6 +206,20 @@ class _MainWidgetState extends State<MainWidget> {
                           PrimaryButton(
                             width: double.infinity,
                             onPressed: () async {
+                              // On web, biometrics are not available — skip straight to login.
+                              if (kIsWeb) {
+                                final username = _storedUsername ?? _usernameController.text.trim();
+                                if (username.isEmpty) {
+                                  _showMessage('Please enter a username.');
+                                  return;
+                                }
+                                final SharedPreferences pref = await prefs;
+                                await pref.setString('userLoggedIn', username);
+                                setState(() => _storedUsername = username);
+                                _loginCompleted();
+                                return;
+                              }
+
                               if (!_biometricsAvailable) {
                                 _showMessage(
                                     'Biometric authentication is not available on this device.');

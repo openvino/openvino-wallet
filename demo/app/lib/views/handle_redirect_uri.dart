@@ -8,14 +8,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'dart:developer';
-import 'package:app/wallet_sdk/wallet_sdk_mobile.dart';
+import 'package:app/wallet_sdk/wallet_sdk.dart';
 import 'package:app/services/storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/models/activity_data_object.dart';
 import 'package:app/models/credential_data.dart';
 import 'credential_preview.dart';
 import 'package:flutter/foundation.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:uni_links/uni_links.dart'
+    if (dart.library.js_interop) '../stubs/uni_links_stub.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:app/views/custom_error.dart';
 

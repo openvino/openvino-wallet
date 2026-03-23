@@ -4,6 +4,9 @@ Copyright Gen Digital Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
+// Import agent.js for its side effect: the UMD bundle sets self.Agent on the global scope
+import './node_modules/@trustbloc-cicd/wallet-sdk-js/dist/agent.js';
+
 let agent;
 let openID4CIInteraction;
 let openID4VPInteraction;
@@ -11,7 +14,7 @@ let createdDID;
 
 async function jsInitSDK(didResolverURI) {
     const kmsDatabase = await CreateDB("test")
-    agent = new Agent.default({assetsPath: "", didResolverURI:didResolverURI, kmsDatabase: kmsDatabase});
+    agent = new self.Agent.default({assetsPath: "", didResolverURI:didResolverURI, kmsDatabase: kmsDatabase});
     await agent.initialize();
 }
 
@@ -207,3 +210,19 @@ function CreateDB(dbName) {
   }
 }
 
+// Expose functions to the global scope so Dart's @JS() interop can call them
+window.jsInitSDK = jsInitSDK;
+window.jsCreateDID = jsCreateDID;
+window.jsCreateOpenID4CIInteraction = jsCreateOpenID4CIInteraction;
+window.jsRequestCredentialWithPreAuth = jsRequestCredentialWithPreAuth;
+window.jsIssuerURI = jsIssuerURI;
+window.jsResolveDisplayData = jsResolveDisplayData;
+window.jsGetCredentialID = jsGetCredentialID;
+window.jsParseResolvedDisplayData = jsParseResolvedDisplayData;
+window.jsCreateOpenID4VPInteraction = jsCreateOpenID4VPInteraction;
+window.jsGetSubmissionRequirements = jsGetSubmissionRequirements;
+window.jsPresentCredential = jsPresentCredential;
+window.jsVerifierDisplayData = jsVerifierDisplayData;
+window.jsVerifyCredentialsStatus = jsVerifyCredentialsStatus;
+window.jsWellKnownDidConfig = jsWellKnownDidConfig;
+window.jsGetIssuerMetadata = jsGetIssuerMetadata;

@@ -9,6 +9,7 @@ import 'dart:developer';
 
 import 'package:app/main.dart';
 import 'package:app/views/dashboard.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:app/services/storage_service.dart';
 import 'package:app/services/config_service.dart';
 import 'package:app/wallet_sdk/wallet_sdk_model.dart';
@@ -45,6 +46,8 @@ class IssuancePreviewState extends State<IssuancePreview> {
   String? issuerServiceURL;
   EvaluationResult? trustInfoEvaluationResult;
   CredentialOfferDisplayData? offerDisplayData;
+  CreateDID? _preFetchedDID;
+  Future<List<CredentialWithId>>? _credentialFuture;
 
   @override
   void initState() {
@@ -72,6 +75,27 @@ class IssuancePreviewState extends State<IssuancePreview> {
     setState(() {
       issuerServiceURL = serviceURL;
     });
+
+    // Pre-create DID while user reads the preview, so it's ready when they tap "Add to Wallet"
+    // and we don't waste pre-auth code TTL waiting for DID creation.
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final didType = pref.getString('didType') ?? 'jwk';
+    final keyType = pref.getString('keyType') ?? 'ECDSAP384IEEEP1363';
+    try {
+      _preFetchedDID = await WalletSDKPlugin.createDID(didType, keyType);
+      await pref.setString('userDID', _preFetchedDID!.did);
+      await pref.setString('userDIDDoc', _preFetchedDID!.didDoc);
+    } catch (e) {
+      log('Pre-fetch DID failed: $e');
+      return;
+    }
+
+    // On web, kick off the credential request immediately after DID creation
+    // so the pre-auth code doesn't expire while the user reads the preview.
+    if (kIsWeb && widget.authorizeResultPinRequired != true && widget.uri == null) {
+      _credentialFuture = WalletSDKPlugin.requestCredential('',
+          attestationVC: await AttestationService.returnAttestationVCIfEnabled());
+    }
   }
 
   @override
@@ -265,37 +289,57 @@ class IssuancePreviewState extends State<IssuancePreview> {
   }
 
   void navigateToWithoutPinFlow(BuildContext context) async {
-    var credentialData = await fetchPreviewScreenDetails();
+    List<CredentialData> credentialData;
+    try {
+      credentialData = await fetchPreviewScreenDetails();
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to get credential: ${e.toString()}'),
+          duration: const Duration(seconds: 8),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
 
+    if (!context.mounted) return;
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => CredentialPreview(credentialsData: credentialData)));
   }
 
   Future<List<CredentialData>> fetchPreviewScreenDetails() async {
-    final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
     final StorageService storageService = StorageService();
-    final SharedPreferences pref = await prefs;
+    final SharedPreferences pref = await SharedPreferences.getInstance();
 
-    var didType = pref.getString('didType');
-    var keyType = pref.getString('keyType');
-    // choosing default if no selection is made
-    didType = didType ?? 'jwk';
-    keyType = keyType ?? 'ECDSAP384IEEEP1363';
+    // Use the DID pre-created during _init() if available; otherwise create one now.
+    CreateDID didResolution;
+    if (_preFetchedDID != null) {
+      didResolution = _preFetchedDID!;
+      log('using pre-fetched DID: ${didResolution.did}');
+    } else {
+      final didType = pref.getString('didType') ?? 'jwk';
+      final keyType = pref.getString('keyType') ?? 'ECDSAP384IEEEP1363';
+      didResolution = await WalletSDKPlugin.createDID(didType, keyType);
+      await pref.setString('userDID', didResolution.did);
+      await pref.setString('userDIDDoc', didResolution.didDoc);
+    }
+    final didID = didResolution.did;
+    log('didID: $didID');
 
-    var didResolution = await WalletSDKPlugin.createDID(didType, keyType);
-    var didID = didResolution.did;
-    var didDoc = didResolution.didDoc;
-    log('created didID :$didID');
+    // Skip notify on web — the attestation URL has placeholder values and the
+    // CORS preflight failure adds latency that can expire the pre-auth code.
+    if (!kIsWeb) {
+      await _notifyIssuanceEndpoint(didID, pref.getStringList('credentialTypes') ?? const []);
+    }
 
-    pref.setString('userDID', didID);
-    pref.setString('userDIDDoc', didDoc);
-
-    await _notifyIssuanceEndpoint(didID, pref.getStringList('credentialTypes') ?? const []);
-
-    final credentials = await WalletSDKPlugin.requestCredential(
-      '',
-      attestationVC: await AttestationService.returnAttestationVCIfEnabled(),
-    );
+    final credentials = _credentialFuture != null
+        ? await _credentialFuture!
+        : await WalletSDKPlugin.requestCredential(
+            '',
+            attestationVC: await AttestationService.returnAttestationVCIfEnabled(),
+          );
     final issuerURL = await WalletSDKPlugin.issuerURI();
     final resolvedCredentialsDisplay =
         await WalletSDKPlugin.resolveDisplayData(credentials.map((e) => e.content).toList(), issuerURL!);

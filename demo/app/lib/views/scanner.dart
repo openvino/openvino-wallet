@@ -11,8 +11,10 @@ import 'package:app/theme/app_colors.dart';
 import 'package:app/widgets/common_title_appbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:safe_device/safe_device.dart';
+import 'package:mobile_scanner/mobile_scanner.dart'
+    if (dart.library.js_interop) '../stubs/mobile_scanner_stub.dart';
+import 'package:safe_device/safe_device.dart'
+    if (dart.library.js_interop) '../stubs/safe_device_stub.dart';
 
 import 'package:app/widgets/primary_button.dart';
 

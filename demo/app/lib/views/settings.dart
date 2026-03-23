@@ -186,7 +186,8 @@ class SettingsState extends State<Settings> {
   getVersionDetails() async {
     var walletSDKPlugin = WalletSDK();
     var versionDetailResp = await walletSDKPlugin.getVersionDetails();
-    var didDocEncoded = json.encode(versionDetailResp!);
+    if (versionDetailResp == null) return;
+    var didDocEncoded = json.encode(versionDetailResp);
     Map<String, dynamic> responseJson = json.decode(didDocEncoded);
     walletSDKVersion = responseJson['walletSDKVersion'];
     gitRevision = responseJson['gitRevision'];
