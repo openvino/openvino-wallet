@@ -36,6 +36,9 @@ public class SwiftWalletSDKPlugin: NSObject, FlutterPlugin {
         case "createDID":
             createDid(arguments: arguments!, result: result)
 
+        case "restoreDIDDoc":
+            restoreDIDDoc(arguments: arguments!, result: result)
+
         case "initialize":
             initialize(arguments: arguments!, result: result)
 
@@ -426,6 +429,25 @@ public class SwiftWalletSDKPlugin: NSObject, FlutterPlugin {
                                      message: "error while creating did",
                                      details: error.localizedDescription))
         }
+    }
+
+    /**
+     Restores the DIDDocResolution from a previously created and stored DID document content string,
+     avoiding the need to call createDID again (which can crash due to a Go GC issue on re-entrant calls).
+     */
+    public func restoreDIDDoc(arguments: Dictionary<String, Any>, result: @escaping FlutterResult) {
+        guard let didDocContent = arguments["didDocContent"] as? String else {
+            return result(FlutterError.init(code: "NATIVE_ERR",
+                                             message: "error while restoring DID doc",
+                                             details: "parameter didDocContent is missing"))
+        }
+        guard let doc = ApiNewDIDDocResolution(didDocContent) else {
+            return result(FlutterError.init(code: "NATIVE_ERR",
+                                             message: "error while restoring DID doc",
+                                             details: "ApiNewDIDDocResolution returned nil"))
+        }
+        didDocResolution = doc
+        result(nil)
     }
 
     /**
@@ -1207,7 +1229,7 @@ public class SwiftWalletSDKPlugin: NSObject, FlutterPlugin {
                                              details: "issuer id is missing"))
         }
 
-        let didResolver = DidNewResolver(nil, nil)
+        let didResolver = self.walletSDK?.didResolver ?? DidNewResolver(nil, nil)
         var error: NSError?
 
         var didValidateResult = DidValidateLinkedDomains(issuerID, didResolver, nil, &error)
