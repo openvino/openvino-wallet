@@ -9,7 +9,7 @@ import 'package:app/main.dart';
 class CredentialMetaDataCard extends StatefulWidget {
   CredentialData credentialData;
 
-  CredentialMetaDataCard({required this.credentialData, Key? key}) : super(key: key);
+  CredentialMetaDataCard({required this.credentialData, super.key});
   @override
   State<CredentialMetaDataCard> createState() => CredentialMetaDataCardState();
 }

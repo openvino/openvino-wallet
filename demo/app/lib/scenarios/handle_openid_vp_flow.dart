@@ -42,6 +42,7 @@ void handleOpenIDVpFlow(BuildContext context, String qrCodeURL) async {
                 titleBar: 'Processing Presentation',
                 requestErrorTitleMsg: error.message!,
                 requestErrorSubTitleMsg: error.details)));
+    return;
   }
   // Get the matched VCIDs from the submission request.
   var getSubmissionRequest = await walletSDKPlugin.getSubmissionRequirements(storedCredentials: credentials);
@@ -104,7 +105,7 @@ void handleOpenIDVpFlow(BuildContext context, String qrCodeURL) async {
               storedCredentials.firstWhere((element) => credID.contains(element.value.credID)).value.credentialDID;
 
           log('matched issuerURI found: $issuerURI');
-          final credentialDisplayData = (await walletSDKPlugin.resolveDisplayData([matchVC], issuerURI.first))!;
+          final credentialDisplayData = (await walletSDKPlugin.resolveDisplayData([matchVC], issuerURI.first));
           log('credentialDisplayData -> $credentialDisplayData');
           navigateToPresentationPreviewScreen(
               context,

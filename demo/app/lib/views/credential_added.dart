@@ -12,7 +12,7 @@ import 'package:app/widgets/success_card.dart';
 class CredentialAdded extends StatefulWidget {
   final List<CredentialData> credentialData;
 
-  const CredentialAdded({required this.credentialData, Key? key}) : super(key: key);
+  const CredentialAdded({required this.credentialData, super.key});
 
   @override
   State<CredentialAdded> createState() => CredentialAddedPage();

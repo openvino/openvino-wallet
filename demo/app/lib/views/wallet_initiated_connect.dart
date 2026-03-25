@@ -18,7 +18,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConnectIssuerList extends StatefulWidget {
-  const ConnectIssuerList({Key? key}) : super(key: key);
+  const ConnectIssuerList({super.key});
 
   @override
   State<ConnectIssuerList> createState() => ConnectIssuerListState();
@@ -87,7 +87,7 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
                     child: ListTile(
                         title: Text(
                           connectIssuerConfigList.elementAt(index).key,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                             color: AppColors.textPrimary,
@@ -102,9 +102,7 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
                             color: AppColors.textSecondary,
                           ),
                         ),
-                        leading: connectIssuerConfigList.elementAt(index).value.logo == null
-                            ? const SizedBox.shrink()
-                            : CachedNetworkImage(
+                        leading: CachedNetworkImage(
                                 imageUrl: connectIssuerConfigList.elementAt(index).value.logo,
                                 placeholder: (context, url) =>
                                     const SizedBox(width: 20, height: 20, child: CircularProgressIndicator()),

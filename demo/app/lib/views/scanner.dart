@@ -17,7 +17,7 @@ import 'package:safe_device/safe_device.dart';
 import 'package:app/widgets/primary_button.dart';
 
 class QRScanner extends StatefulWidget {
-  const QRScanner({Key? key}) : super(key: key);
+  const QRScanner({super.key});
 
   @override
   State<StatefulWidget> createState() {

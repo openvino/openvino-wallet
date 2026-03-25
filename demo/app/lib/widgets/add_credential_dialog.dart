@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:app/models/store_credential_data.dart';
 
 class AddDataDialog extends StatelessWidget {
-  AddDataDialog({Key? key}) : super(key: key);
+  AddDataDialog({super.key});
 
   final TextEditingController _keyController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();

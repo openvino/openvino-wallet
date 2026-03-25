@@ -6,7 +6,6 @@ SPDX-License-Identifier: Apache-2.0
 
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:app/models/connect_issuer_config.dart';
 import 'package:app/models/connect_issuer_config_value.dart';

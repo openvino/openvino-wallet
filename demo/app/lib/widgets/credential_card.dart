@@ -22,8 +22,7 @@ class CredentialCard extends StatefulWidget {
       this.activityLogger,
       this.delete,
       required this.isDetailArrowRequired,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   @override
   State<CredentialCard> createState() => _CredentialCardState();

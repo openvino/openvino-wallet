@@ -26,8 +26,7 @@ class CredentialDetails extends StatefulWidget {
       required this.isDashboardWidget,
       required this.credentialName,
       this.activityLogger,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   @override
   State<CredentialDetails> createState() => CredentialDetailsState();

@@ -34,6 +34,12 @@ class WalletSDK extends WalletPlatform {
     return CreateDID.fromJson(jsonDecode(json.encode(createDIDResp)));
   }
 
+  Future<void> restoreDIDDoc(String didDocContent) async {
+    await methodChannel.invokeMethod('restoreDIDDoc', <String, dynamic>{
+      'didDocContent': didDocContent,
+    });
+  }
+
   Future<String?> fetchStoredDID(String didID) async {
     final fetchDIDMsg = await methodChannel
         .invokeMethod<String>('fetchDID', <String, dynamic>{'didID': didID});

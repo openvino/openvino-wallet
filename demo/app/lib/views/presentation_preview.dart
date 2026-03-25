@@ -223,10 +223,8 @@ class PresentationPreviewState extends State<PresentationPreview> {
 
   void  _callNoConsentAcknowledgment() async {
     var ackResp = await  WalletSDKPlugin.noConsentAcknowledgement();
-    if (ackResp != null) {
-      _navigateToDashboard();
+    _navigateToDashboard();
     }
-  }
 
   void _presentCredential() async {
     final SharedPreferences pref = await prefs;

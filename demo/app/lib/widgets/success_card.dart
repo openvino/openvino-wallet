@@ -7,7 +7,7 @@ class SuccessCard extends StatelessWidget {
   String? subTitle;
   List<CredentialData> credentialDatas;
 
-  SuccessCard({required this.credentialDatas, this.verifierName, this.subTitle, Key? key}) : super(key: key);
+  SuccessCard({required this.credentialDatas, this.verifierName, this.subTitle, super.key});
 
   @override
   Widget build(BuildContext context) {

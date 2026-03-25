@@ -76,7 +76,7 @@ void main() async {
         print('processAuthorizationRequest --> : $l');
 
         // Add another delay if needed
-        await Future.delayed(Duration(seconds: 2));
+        await Future.delayed(const Duration(seconds: 2));
 
         final requirements = await walletSDKPlugin.getSubmissionRequirements(storedCredentials: credentials);
         print('getSubmissionRequirements finished');
@@ -103,7 +103,7 @@ void main() async {
     print('wallet DID type : $didMethodType');
     print('wallet DID Key type : $didKeyType');
 
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     var didDocData = await walletSDKPlugin.createDID(didMethodTypesList[0], didKeyType);
     var didContent = didDocData.did;
     print('wallet DID : $didContent');
@@ -153,7 +153,7 @@ void main() async {
     };
 
     // Add a delay before presenting credentials
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     await walletSDKPlugin.presentCredential(selectedCredentials: matchedCreds, customScopeList: customScopesList);
   },       timeout: Timeout.none );
 

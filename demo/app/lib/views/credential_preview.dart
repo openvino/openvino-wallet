@@ -4,7 +4,6 @@ Copyright Gen Digital Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
-import 'dart:developer';
 
 import 'package:app/main.dart';
 import 'package:app/models/credential_data.dart';

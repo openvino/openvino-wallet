@@ -47,9 +47,16 @@ public class OpenID4VP {
         opts!.add(ApiHeader("X-Correlation-Id", value: self.correlationID))
         opts!.enableAddingDIProofs(kms)
 
-        let interaction = Openid4vpNewInteraction(args, opts, nil)
+        var interactionError: NSError?
+        let interaction = Openid4vpNewInteraction(args, opts, &interactionError)
+        if let interactionError = interactionError {
+            throw interactionError
+        }
+        guard let interaction = interaction else {
+            throw OpenID4VPError.runtimeError("Openid4vpNewInteraction returned nil without error")
+        }
 
-        vpQueryContent = try interaction!.getQuery()
+        vpQueryContent = try interaction.getQuery()
         initiatedInteraction = interaction
     }
 

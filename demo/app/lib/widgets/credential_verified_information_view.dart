@@ -9,7 +9,7 @@ class CredentialVerifiedInformation extends StatefulWidget {
   CredentialData credentialData;
   double? height;
 
-  CredentialVerifiedInformation({required this.credentialData, this.height, Key? key}) : super(key: key);
+  CredentialVerifiedInformation({required this.credentialData, this.height, super.key});
 
   @override
   State<CredentialVerifiedInformation> createState() => CredentialVerifiedState();

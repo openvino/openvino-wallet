@@ -255,8 +255,8 @@ class PresentationPreviewMultiCredCheckState extends State<PresentationPreviewMu
                               }
                             }
                             var activities = await WalletSDKPlugin.storeActivityLogger();
-                            var credID = pref.getString('credID');
-                            _storageService.addActivities(ActivityDataObj(credID!, activities));
+                            var credID = pref.getString('credID') ?? selectedCredentialData.firstOrNull?.credID ?? '';
+                            _storageService.addActivities(ActivityDataObj(credID, activities));
                             _navigateToCredentialShareSuccess(verifierName);
                           },
                           width: double.infinity,
@@ -288,10 +288,8 @@ class PresentationPreviewMultiCredCheckState extends State<PresentationPreviewMu
 
   void  _callNoConsentAcknowledgment() async {
     var ackResp = await  WalletSDKPlugin.noConsentAcknowledgement();
-    if (ackResp != null) {
-      _navigateToDashboard();
+    _navigateToDashboard();
     }
-  }
   _navigateToDashboard() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const Dashboard()));
   }

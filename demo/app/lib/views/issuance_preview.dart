@@ -31,7 +31,7 @@ class IssuancePreview extends StatefulWidget {
   final bool? authorizeResultPinRequired;
   final Uri? uri;
 
-  const IssuancePreview({this.authorizeResultPinRequired, this.uri, Key? key}) : super(key: key);
+  const IssuancePreview({this.authorizeResultPinRequired, this.uri, super.key});
 
   @override
   State<IssuancePreview> createState() => IssuancePreviewState();
@@ -45,6 +45,7 @@ class IssuancePreviewState extends State<IssuancePreview> {
   String? issuerServiceURL;
   EvaluationResult? trustInfoEvaluationResult;
   CredentialOfferDisplayData? offerDisplayData;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -214,7 +215,7 @@ class IssuancePreviewState extends State<IssuancePreview> {
                               padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
                             ),
                             PrimaryButton(
-                                onPressed: () async {
+                                onPressed: _isLoading ? null : () async {
                                   if (widget.authorizeResultPinRequired == true) {
                                     navigateToOTPScreen(context);
                                   } else if (widget.uri != null) {
@@ -224,8 +225,13 @@ class IssuancePreviewState extends State<IssuancePreview> {
                                   }
                                 },
                                 width: double.infinity,
-                                child:
-                                    const Text('Add to Wallet', style: TextStyle(fontSize: 16, color: Colors.white))),
+                                child: _isLoading
+                                    ? const SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                                      )
+                                    : const Text('Add to Wallet', style: TextStyle(fontSize: 16, color: Colors.white))),
                             const Padding(
                               padding: EdgeInsets.fromLTRB(24, 0, 24, 8),
                             ),
@@ -265,10 +271,21 @@ class IssuancePreviewState extends State<IssuancePreview> {
   }
 
   void navigateToWithoutPinFlow(BuildContext context) async {
-    var credentialData = await fetchPreviewScreenDetails();
-
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => CredentialPreview(credentialsData: credentialData)));
+    setState(() => _isLoading = true);
+    try {
+      var credentialData = await fetchPreviewScreenDetails();
+      if (!mounted) return;
+      Navigator.push(
+          this.context, MaterialPageRoute(builder: (context) => CredentialPreview(credentialsData: credentialData)));
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(this.context).showSnackBar(
+          SnackBar(content: Text('Error: ${e.toString()}'), duration: const Duration(seconds: 6)),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   Future<List<CredentialData>> fetchPreviewScreenDetails() async {
@@ -282,13 +299,22 @@ class IssuancePreviewState extends State<IssuancePreview> {
     didType = didType ?? 'jwk';
     keyType = keyType ?? 'ECDSAP384IEEEP1363';
 
-    var didResolution = await WalletSDKPlugin.createDID(didType, keyType);
-    var didID = didResolution.did;
-    var didDoc = didResolution.didDoc;
-    log('created didID :$didID');
+    final existingDIDDoc = pref.getString('userDIDDoc');
+    final existingDID = pref.getString('userDID');
 
-    pref.setString('userDID', didID);
-    pref.setString('userDIDDoc', didDoc);
+    String didID;
+    if (existingDIDDoc != null && existingDID != null) {
+      await WalletSDKPlugin.restoreDIDDoc(existingDIDDoc);
+      didID = existingDID;
+      log('restored existing didID :$didID');
+    } else {
+      var didResolution = await WalletSDKPlugin.createDID(didType, keyType);
+      didID = didResolution.did;
+      var didDoc = didResolution.didDoc;
+      log('created didID :$didID');
+      pref.setString('userDID', didID);
+      pref.setString('userDIDDoc', didDoc);
+    }
 
     await _notifyIssuanceEndpoint(didID, pref.getStringList('credentialTypes') ?? const []);
 

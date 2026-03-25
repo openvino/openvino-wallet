@@ -25,7 +25,7 @@ import 'credential_preview.dart';
 import 'package:app/views/dashboard.dart';
 
 class OTP extends StatefulWidget {
-  const OTP({Key? key}) : super(key: key);
+  const OTP({super.key});
 
   @override
   State<OTP> createState() => _OTPPage();
@@ -212,7 +212,7 @@ class _OTPPage extends State<OTP> {
                                     var credID = credentials[i].id;
 
                                     log('activities and credID -$activities and $credID');
-                                    _storageService.addActivities(ActivityDataObj(credID!, activities));
+                                    _storageService.addActivities(ActivityDataObj(credID, activities));
                                     pref.setString('credID', credID);
 
                                     result.add(CredentialData(

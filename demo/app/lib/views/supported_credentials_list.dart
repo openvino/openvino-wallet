@@ -24,8 +24,7 @@ class SupportedCredentialsList extends StatefulWidget {
       required this.supportedCredentialList,
       required this.connectIssuerConfigValue,
       this.issuerURI,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   @override
   State<StatefulWidget> createState() {

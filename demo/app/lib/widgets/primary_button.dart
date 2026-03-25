@@ -10,7 +10,7 @@ class PrimaryButton extends StatelessWidget {
   final Widget child;
 
   const PrimaryButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.child,
     this.borderRadius,
@@ -23,7 +23,7 @@ class PrimaryButton extends StatelessWidget {
       end: Alignment.bottomRight,
     ),
     padding = const EdgeInsets.all(16),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
