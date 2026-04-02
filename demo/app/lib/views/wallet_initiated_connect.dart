@@ -25,7 +25,8 @@ class ConnectIssuerList extends StatefulWidget {
 }
 
 class ConnectIssuerListState extends State<ConnectIssuerList> {
-  List<ConnectIssuerConfig> connectIssuerConfigList = List.empty(growable: true);
+  List<ConnectIssuerConfig> connectIssuerConfigList =
+      List.empty(growable: true);
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 
   var walletSDKPlugin = WalletSDK();
@@ -35,7 +36,8 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
   Future<List<SupportedCredentials>> connect(String issuerURI) async {
     final SharedPreferences pref = await prefs;
     credentialTypes = pref.getStringList('credentialTypes');
-    return await walletSDKPlugin.initializeWalletInitiatedFlow(issuerURI, credentialTypes!);
+    return await walletSDKPlugin.initializeWalletInitiatedFlow(
+        issuerURI, credentialTypes!);
   }
 
   readConnectIssuerConfig() async {
@@ -72,13 +74,28 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
               itemBuilder: (context, index) {
                 return Column(children: [
                   Container(
+                    height: 80,
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
-                        color: AppColors.surface,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppColors.surfaceBorder)),
+                        color: connectIssuerConfigList
+                                .elementAt(index)
+                                .value
+                                .backgroundColor
+                                .isNotEmpty
+                            ? Color(int.parse(
+                                '0xff${connectIssuerConfigList.elementAt(index).value.backgroundColor.replaceAll('#', '')}'))
+                            : AppColors.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(3, 3),
+                            color: Colors.grey.shade300,
+                            blurRadius: 5,
+                          )
+                        ]),
                     /*     color: connectIssuerConfigList.elementAt(index).value.backgroundColor.isNotEmpty
                       ? Color(int.parse(
                           '0xff${connectIssuerConfigList.elementAt(index).value.backgroundColor.replaceAll('#', '')}'))
@@ -87,14 +104,24 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
                     child: ListTile(
                         title: Text(
                           connectIssuerConfigList.elementAt(index).key,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: AppColors.textPrimary,
+                            color: connectIssuerConfigList
+                                    .elementAt(index)
+                                    .value
+                                    .textColor
+                                    .isNotEmpty
+                                ? Color(int.parse(
+                                    '0xff${connectIssuerConfigList.elementAt(index).value.textColor.replaceAll('#', '')}'))
+                                : AppColors.textPrimary,
                           ),
                         ),
                         subtitle: Text(
-                          connectIssuerConfigList.elementAt(index).value.description,
+                          connectIssuerConfigList
+                              .elementAt(index)
+                              .value
+                              .description,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -102,44 +129,79 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
                             color: AppColors.textSecondary,
                           ),
                         ),
-                        leading: CachedNetworkImage(
-                                imageUrl: connectIssuerConfigList.elementAt(index).value.logo,
-                                placeholder: (context, url) =>
-                                    const SizedBox(width: 20, height: 20, child: CircularProgressIndicator()),
+                        leading: connectIssuerConfigList
+                                .elementAt(index)
+                                .value
+                                .logo
+                                .isEmpty
+                            ? const SizedBox.shrink()
+                            : CachedNetworkImage(
+                                imageUrl: connectIssuerConfigList
+                                    .elementAt(index)
+                                    .value
+                                    .logo,
+                                placeholder: (context, url) => const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator()),
                                 errorWidget: (context, url, error) =>
-                                    Image.asset('lib/assets/images/logoIcon.png', fit: BoxFit.contain),
+                                    Image.asset(
+                                        'lib/assets/images/logoIcon.png',
+                                        fit: BoxFit.contain),
                                 width: 50,
                                 height: 50,
                                 fit: BoxFit.contain,
                               ),
                         trailing: IconButton(
-                          icon: const Icon(Icons.arrow_circle_right_outlined, size: 24, color: AppColors.accent),
+                          icon: const Icon(Icons.arrow_circle_right_outlined,
+                              size: 24, color: AppColors.accent),
                           onPressed: () async {
                             try {
-                              var supportedCredentials =
-                                  await connect(connectIssuerConfigList.elementAt(index).value.issuerURI);
-                              var connectIssuerConfigValue = ConnectIssuerConfigValue(
-                                  issuerURI: '',
-                                  scopes: connectIssuerConfigList.elementAt(index).value.scopes,
-                                  clientID: connectIssuerConfigList.elementAt(index).value.clientID,
-                                  redirectURI: connectIssuerConfigList.elementAt(index).value.redirectURI,
-                                  showIssuer: true,
-                                  description: '',
-                                  backgroundColor: '',
-                                  textColor: '',
-                                  logo: '');
+                              var supportedCredentials = await connect(
+                                  connectIssuerConfigList
+                                      .elementAt(index)
+                                      .value
+                                      .issuerURI);
+                              var connectIssuerConfigValue =
+                                  ConnectIssuerConfigValue(
+                                      issuerURI: '',
+                                      scopes: connectIssuerConfigList
+                                          .elementAt(index)
+                                          .value
+                                          .scopes,
+                                      clientID: connectIssuerConfigList
+                                          .elementAt(index)
+                                          .value
+                                          .clientID,
+                                      redirectURI: connectIssuerConfigList
+                                          .elementAt(index)
+                                          .value
+                                          .redirectURI,
+                                      showIssuer: true,
+                                      description: '',
+                                      backgroundColor: '',
+                                      textColor: '',
+                                      logo: '');
                               _navigateToSupportedCredentialScreen(
                                   connectIssuerConfigList.elementAt(index).key,
-                                  connectIssuerConfigList.elementAt(index).value.issuerURI,
+                                  connectIssuerConfigList
+                                      .elementAt(index)
+                                      .value
+                                      .issuerURI,
                                   supportedCredentials,
                                   connectIssuerConfigValue);
                             } catch (err) {
-                              if (err is PlatformException && err.message != null && err.message!.isNotEmpty) {
-                                var resp = await walletSDKPlugin.parseWalletSDKError(
-                                    localizedErrorMessage: err.details.toString());
+                              if (err is PlatformException &&
+                                  err.message != null &&
+                                  err.message!.isNotEmpty) {
+                                var resp =
+                                    await walletSDKPlugin.parseWalletSDKError(
+                                        localizedErrorMessage:
+                                            err.details.toString());
                                 setState(() {
                                   _requestErrorSubTitleMsg = resp.details;
-                                  _requestErrorTitleMsg = 'Oops! Something went wrong!';
+                                  _requestErrorTitleMsg =
+                                      'Oops! Something went wrong!';
                                   show = true;
                                 });
                               }
@@ -183,7 +245,8 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
                                     height: 24,
                                     width: 24,
                                     child: Image(
-                                      image: AssetImage('lib/assets/images/errorVector.png'),
+                                      image: AssetImage(
+                                          'lib/assets/images/errorVector.png'),
                                       width: 24,
                                       height: 24,
                                       fit: BoxFit.cover,
@@ -204,7 +267,10 @@ class ConnectIssuerListState extends State<ConnectIssuerList> {
     );
   }
 
-  _navigateToSupportedCredentialScreen(String issuerName, issuerURI, List<SupportedCredentials> supportedCredentials,
+  _navigateToSupportedCredentialScreen(
+      String issuerName,
+      issuerURI,
+      List<SupportedCredentials> supportedCredentials,
       ConnectIssuerConfigValue connectIssuerConfigValue) async {
     Navigator.push(
       context,

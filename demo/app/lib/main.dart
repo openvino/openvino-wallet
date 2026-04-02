@@ -30,7 +30,7 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await Future.delayed(const Duration(seconds: 3));
-    FlutterNativeSplash.remove();
+  FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
 
@@ -99,8 +99,6 @@ class _MainWidgetState extends State<MainWidget> {
         _usernameController.text = storedUsername;
       }
     });
-
-    
   }
 
   @override
@@ -112,132 +110,121 @@ class _MainWidgetState extends State<MainWidget> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Stack(
-          children: [
-            Center(
-              child: SingleChildScrollView(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Image(
-                      image: AssetImage('lib/assets/images/aleph_logo.png'),
-                      height: 50,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      _storedUsername == null
-                          ? 'Create your local profile and unlock with biometrics.'
-                          : 'Welcome back, unlock with biometrics to continue.',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontFamily: 'SF Pro',
-                        fontSize: 14,
-                        color: AppColors.textOnAccent,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
-                      decoration: BoxDecoration(
-                        color: AppColors.textOnAccent,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.08),
-                            blurRadius: 24,
-                            offset: const Offset(0, 12),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            _storedUsername == null
-                                ? 'Create Account'
-                                : 'Unlock Wallet',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              fontFamily: 'SF Pro',
-                              color: Color(0xff190C21),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          if (_storedUsername == null)
-                            PrimaryInputField(
-                              textController: _usernameController,
-                              titleTextAlign: TextAlign.center,
-                              labelText: 'Username',
-                              textInputFormatter: FilteringTextInputFormatter
-                                  .singleLineFormatter,
-                            )
-                          else
-                            Column(
-                              children: [
-                                Text(
-                                  _storedUsername ?? '',
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff190C21),
-                                  ),
-                                ),
-                                const SizedBox(height: 6),
-                                const Text(
-                                  'Biometrics required to unlock.',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff6C6D7C),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          const SizedBox(height: 20),
-                          PrimaryButton(
-                            width: double.infinity,
-                            onPressed: () async {
-                              if (!_biometricsAvailable) {
-                                _showMessage(
-                                    'Biometric authentication is not available on this device.');
-                                return;
-                              }
-
-                              if (_storedUsername == null) {
-                                final username =
-                                    _usernameController.text.trim();
-                                if (username.isEmpty) {
-                                  _showMessage('Please enter a username.');
-                                  return;
-                                }
-                                final SharedPreferences pref = await prefs;
-                                await pref.setString('userLoggedIn', username);
-                                setState(() {
-                                  _storedUsername = username;
-                                });
-                              }
-
-                              await _authenticateAndLogin();
-                            },
-                            child: Text(
-                              _storedUsername == null
-                                  ? 'Register & Unlock'
-                                  : 'Unlock',
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Sign In',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    fontFamily: 'SF Pro',
+                    color: AppColors.textPrimary,
+                  ),
                 ),
-              ),
+                const SizedBox(height: 10),
+                Text(
+                  _storedUsername == null
+                      ? 'Create your local profile and unlock with biometrics.'
+                      : 'Welcome back, unlock with biometrics to continue.',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'SF Pro',
+                    fontSize: 14,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 28),
+                Container(
+                  width: 420,
+                  constraints: const BoxConstraints(maxWidth: 420),
+                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x14000000),
+                        blurRadius: 24,
+                        offset: Offset(0, 12),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      if (_storedUsername == null)
+                        PrimaryInputField(
+                          textController: _usernameController,
+                          titleTextAlign: TextAlign.center,
+                          labelText: 'Username',
+                          textInputFormatter:
+                              FilteringTextInputFormatter.singleLineFormatter,
+                        )
+                      else
+                        Column(
+                          children: [
+                            Text(
+                              _storedUsername ?? '',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            const Text(
+                              'Biometrics required to unlock.',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      const SizedBox(height: 20),
+                      PrimaryButton(
+                        width: double.infinity,
+                        onPressed: () async {
+                          if (!_biometricsAvailable) {
+                            _showMessage(
+                                'Biometric authentication is not available on this device.');
+                            return;
+                          }
+
+                          if (_storedUsername == null) {
+                            final username = _usernameController.text.trim();
+                            if (username.isEmpty) {
+                              _showMessage('Please enter a username.');
+                              return;
+                            }
+                            final SharedPreferences pref = await prefs;
+                            await pref.setString('userLoggedIn', username);
+                            setState(() {
+                              _storedUsername = username;
+                            });
+                          }
+
+                          await _authenticateAndLogin();
+                        },
+                        child: Text(
+                          _storedUsername == null
+                              ? 'Register & Unlock'
+                              : 'Unlock',
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -272,17 +259,6 @@ class _MainWidgetState extends State<MainWidget> {
   void _showMessage(String message) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
-  }
-
-  Widget _decorativeBlob(Color color, double size) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(size / 2),
-      ),
-    );
   }
 
   _loginCompleted() async {

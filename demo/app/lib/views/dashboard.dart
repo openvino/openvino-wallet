@@ -36,17 +36,16 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.qr_code),
@@ -58,13 +57,16 @@ class _DashboardState extends State<Dashboard> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedLabelStyle: const TextStyle(fontFamily: 'SF Pro', fontSize: 12, fontWeight: FontWeight.bold),
-        selectedItemColor:  AppColors.accent,
-        unselectedItemColor: AppColors.textOnAccent,
+        selectedLabelStyle: const TextStyle(
+          fontFamily: 'SF Pro',
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
+        selectedItemColor: AppColors.accent,
+        unselectedItemColor: AppColors.textPrimary.withValues(alpha: 0.6),
         backgroundColor: AppColors.background,
         onTap: _onItemTapped,
       ),
     );
   }
 }
-

@@ -1,4 +1,3 @@
-import 'package:app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app/views/dashboard.dart';
@@ -21,8 +20,7 @@ class CustomTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 50,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         automaticallyImplyLeading: false,
         title: Text(pageTitle!,
             textAlign: TextAlign.center,
@@ -31,21 +29,30 @@ class CustomTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'SF Pro',
-                color: AppColors.textOnAccent)),
-        backgroundColor: AppColors.background,
+                color: Color(0xff190c21))),
+        backgroundColor: const Color(0xfffcca40),
         actions: addCloseIcon == true
             ? [
                 IconButton(
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const Dashboard())),
                   icon: const Icon(Icons.close),
-                  color: AppColors.textOnAccent,
+                  color: const Color(0xff190c21),
                 ),
               ]
             : [],
         flexibleSpace: Container(
-          height: 200,
-          color: AppColors.background,
+          height: 130,
+          padding: const EdgeInsets.all(18),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: ExactAssetImage('lib/assets/images/glow.png'),
+              opacity: 0.55,
+              alignment: Alignment.topCenter,
+              fit: BoxFit.fill,
+            ),
+            color: Color(0xfffcca40),
+          ),
         ),
       ),
     );

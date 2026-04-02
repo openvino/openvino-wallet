@@ -40,8 +40,10 @@ class PrimaryButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.accent,
           foregroundColor: Colors.white,
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: borderRadius,
+            side: const BorderSide(color: AppColors.accent),
           ),
         ),
         child: child,

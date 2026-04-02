@@ -63,9 +63,9 @@ class _CredentialListState extends State<CredentialList> {
                 child: const Text(
                   'Credentials',
                   style: TextStyle(
-                      color: AppColors.textOnAccent,
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                      fontSize: 16),
                 )),
             Container(
               padding: const EdgeInsets.fromLTRB(24, 40, 16, 24),
@@ -75,7 +75,7 @@ class _CredentialListState extends State<CredentialList> {
                   : _credentialList.isEmpty
                       ? const Text(
                           'No credentials found',
-                          style: TextStyle(color: AppColors.textOnAccent),
+                          style: TextStyle(color: AppColors.textPrimary),
                         )
                       : ListView.builder(
                           itemCount: _credentialList.length,

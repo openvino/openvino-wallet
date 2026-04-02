@@ -4,8 +4,6 @@ Copyright Gen Digital Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
-import 'dart:async';
-import 'dart:developer';
 import 'package:app/scenarios/handle_openid_url.dart';
 import 'package:app/theme/app_colors.dart';
 import 'package:app/widgets/common_title_appbar.dart';
@@ -31,9 +29,7 @@ class QRScannerState extends State<QRScanner> {
   bool isRealDevice = false;
 
   final MobileScannerController controller = MobileScannerController(
-      detectionSpeed: DetectionSpeed.noDuplicates,
-      returnImage: true
-  );
+      detectionSpeed: DetectionSpeed.noDuplicates, returnImage: true);
 
   @override
   void initState() {
@@ -63,7 +59,8 @@ class QRScannerState extends State<QRScanner> {
               onDetect: (capture) {
                 final List<Barcode> barcodes = capture.barcodes;
                 for (final barcode in barcodes) {
-                  handleOpenIDUrl(context, barcode.rawValue ?? 'No Data found in QR');
+                  handleOpenIDUrl(
+                      context, barcode.rawValue ?? 'No Data found in QR');
                 }
                 controller.dispose();
               },
@@ -86,17 +83,19 @@ class QRScannerState extends State<QRScanner> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.textSecondary,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 32),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 32),
                     child: GestureDetector(
                       onDoubleTap: () {
                         if (textController.text.isNotEmpty) {
-                          textController.selection =
-                              TextSelection(baseOffset: 0, extentOffset: textController.text.length);
+                          textController.selection = TextSelection(
+                              baseOffset: 0,
+                              extentOffset: textController.text.length);
                         }
                       },
                       child: TextField(
@@ -111,7 +110,8 @@ class QRScannerState extends State<QRScanner> {
                           fillColor: AppColors.surface,
                           border: OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.surfaceBorder),
+                            borderSide:
+                                BorderSide(color: AppColors.surfaceBorder),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: AppColors.accent),
@@ -129,9 +129,9 @@ class QRScannerState extends State<QRScanner> {
                       handleOpenIDUrl(context, textController.text.toString());
                     },
                     width: 300,
-                    child: const Text('Submit', style: TextStyle(fontSize: 16, color: Colors.white))),
+                    child: const Text('Submit',
+                        style: TextStyle(fontSize: 16, color: Colors.white))),
               ],
             ));
   }
-
 }

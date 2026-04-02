@@ -66,7 +66,13 @@ class SettingsState extends State<Settings> {
     return Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
-          toolbarHeight: 50,
+          leading: Navigator.of(context).canPop()
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back,
+                      color: AppColors.textPrimary),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              : null,
           automaticallyImplyLeading: false,
           title: const Text(
             'Settings',
@@ -75,9 +81,20 @@ class SettingsState extends State<Settings> {
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'SF Pro',
-                color: AppColors.textOnAccent),
+                color: AppColors.textPrimary),
           ),
           backgroundColor: AppColors.background,
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: ExactAssetImage('lib/assets/images/glow.png'),
+                opacity: 0.55,
+                alignment: Alignment.topCenter,
+                fit: BoxFit.fill,
+              ),
+              color: AppColors.background,
+            ),
+          ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -155,7 +172,7 @@ class SettingsState extends State<Settings> {
                             'Restore Application',
                             style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.red,
+                                color: AppColors.textOnAccent,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -296,7 +313,13 @@ class _SettingsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.surfaceBorder),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x14000000),
+            blurRadius: 16,
+            offset: Offset(0, 8),
+          ),
+        ],
       ),
       child: child,
     );
